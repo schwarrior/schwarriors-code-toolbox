@@ -11,7 +11,16 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\js-utils\\move-from-root-to-library.js"
+            "program": "${workspaceFolder}\\util\\js-util\\move-from-root-to-library.js"
+        },
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Rename lib .linq files to .cs.linq",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\util\\js-util\\rename-linq-to-cslinq.js"
         }
     ]
 }

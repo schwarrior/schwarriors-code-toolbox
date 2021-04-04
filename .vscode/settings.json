@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "*.linq": "csharp"
+        "*vb.linq": "vb",
+        "*cs.linq": "csharp"
     }
 }

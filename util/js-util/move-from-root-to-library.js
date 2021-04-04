@@ -1,10 +1,11 @@
 const glob = require('glob');
 
 const destinationFolder = 'lib';
-const skipFiles = ['util','.vscode','package.json','package-lock.json','README.md','license'];
+const skipFiles = ['util','lib','.vscode','readme.md','license'];
 
-console.log('Moving files from project root to library ...');
-console.log();
+console.log('Outputing git commands ');
+console.log('for moving code files from project root to lib ...');
+console.log('');
 
 const handleFile = function (file) {
     const fileParts = file.split('/');
@@ -22,12 +23,13 @@ const globComplete = function (err, files) {
         files.forEach(file => {
             handleFile(file);
         }); 
+        console.log('');
         console.log('Done.');
     }
 }
 
 const getDirectories = function (onComplete) {
-    glob('*', { cwd: "../../" }, onComplete);
+    glob('*', onComplete);
   };
 
 getDirectories(globComplete);
