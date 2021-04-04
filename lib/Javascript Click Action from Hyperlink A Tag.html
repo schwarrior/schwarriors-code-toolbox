@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Javascript Click Hyperlink A tag</title>
+    <script>
+        /**
+         * @return {boolean}
+         */
+        function OverrideClickToSayHello() {
+            alert('hello');
+            return false;
+        }
+
+        function SayHello() {
+            alert('hello');
+        }
+    </script>
+</head>
+<body>
+<p>When you handle the on click event from an A tag, the link will not display correct if there is no href attribute.
+    (No pointer in Chrome maybe other browsers too.)
+    If the onclick function returns false the default browser behaviour is cancelled. As such:</p>
+
+<p>
+    Method 1:
+    <a href="#" onclick="return OverrideClickToSayHello();" title="Say Hello" role="link" >
+        A Link to Google that is overridden by return onclick
+        false</a>
+</p>
+
+<p>
+    Method 2:
+    <a href="javascript:void(0);" onclick="return SayHello();" title="Say Hello" role="link" >Show Javascript Message Box. (Note: this
+        is a properly and automatically formatted A tag that uses onclick for its action.) </a>
+</p>
+
+<p style="font-size:small;">
+    Reference for Method 2:<br>
+    <a title="Stack Overflow activle" role="link"
+       href="http://stackoverflow.com/questions/134845/href-attribute-for-javascript-links-or-javascriptvoid0">
+    http://stackoverflow.com/questions/134845/href-attribute-for-javascript-links-or-javascriptvoid0
+</p>
+
+</body>
+</html>

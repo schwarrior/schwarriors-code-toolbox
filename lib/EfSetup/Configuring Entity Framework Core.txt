@@ -1,0 +1,60 @@
+Configuring EF Core within an ASP.NET Core 1.1 project
+
+To do: convert to Markdown.
+
+Add Nuget packages for ef core and ef core.sql server
+
+Add database conn string to appsettings.json
+	
+	"ConnectionStrings": {
+	    "DefaultConnection": "Data Source=.;Initial Catalog=MyDatabase;Integrated Security=True"
+	  },
+
+Implement a configuration provider class to pull the setting
+
+	"Csharp AppSettings.json reader Configuration Provider ASP.NET Core.cs"
+
+Create dbcontext class
+
+	public class MyDbContext : DbContext
+	    {
+	        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	        {
+	            var connectionString = ConfigurationProvider.GetDatabaseConnectionString("DefaultConnection");
+	            optionsBuilder.UseSqlServer(connectionString);
+	        }
+	
+	        public DbSet<Template> Templates { get; set; }
+	    }
+
+Add this to .csproj
+
+	  <ItemGroup>
+	      <Content Update="appsettings.json">
+	        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	      </Content>
+	   </ItemGroup>
+
+Unsure if this required, but you might need to create the database first.
+
+Follow these directions to enable command line ef tools
+
+	https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet
+
+From Powershell CLI window in context of .csproj location.
+
+	(there is no enable migrations, the first mig add will do it.)
+
+	dotnet ef dbcontext info
+	
+	dotnet ef migrations add initial
+	
+	dotnet ef database update
+
+
+
+dotnet ef cli ref
+https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet
+
+general ref
+https://docs.microsoft.com/en-us/ef/core/

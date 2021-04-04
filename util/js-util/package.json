@@ -1,0 +1,19 @@
+{
+  "name": "code-library-js-util",
+  "version": "1.0.0",
+  "description": "Scripts for managing the code library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Robert Schwartz",
+  "license": "MIT",
+  "repository": {
+    "type": "GIT",
+    "url": "https://github.com/schwarrior/code-toolbox",
+    "directory": "util/js-util"
+  },
+  "dependencies": {
+    "glob": "^7.1.6"
+  }
+}

@@ -1,0 +1,17 @@
+To do: convert to markdown
+
+asp.net mvc
+to account for sites being hosted in in different paths
+Eg environmnt 1
+http://www.mysite.com/
+Eg environment 2
+http://www.someelsessite.com/mysite/
+
+In view
+Url.Content("~/images/this.png")
+
+In controller (for virtual path)
+VirtualPathUtility.ToAbsolute("~/images/this.png");
+
+In controller (for physical path)
+HttpContext.Current.Server.MapPath("~/images/this.png");

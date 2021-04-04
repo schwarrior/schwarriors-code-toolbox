@@ -1,0 +1,2 @@
+How to do this with a derived column transform formula is unknown. Many variants tried and failed.
+However, using the data conversion transform works great. If dropping decimal precsion it will perform a floor eg 69.469999 becomes 69.46

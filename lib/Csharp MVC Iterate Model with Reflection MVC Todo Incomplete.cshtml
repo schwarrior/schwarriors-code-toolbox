@@ -1,0 +1,56 @@
+// http://stackoverflow.com/questions/6637679/reflection-get-attribute-name-and-value-on-property
+
+
+@if (Model.People != null && Model.People.Any())
+    {
+        <div style="margin: 10px; width: 700px;">
+            <table id="scoring-status-table">
+                @*<tr>
+                    @foreach (var property in  ViewData.ModelMetadata.Properties())
+                    {
+                        <th>@property.DisplayName</th>
+                    }
+                </tr>*@
+                <tr>
+                    @foreach (var property in Model.People.First().GetType().GetProperties())
+                    {
+                        <th>
+                            @property.GetCustomAttributes(typeof(DisplayAttribute),false).Cast<DisplayAttribute>().FirstOrDefault()
+                        </th>
+                    }
+                </tr>
+                @foreach (var person in Model.People)
+                {
+                    <tr>
+                        @foreach (var property in person.GetType().GetProperties())
+                        {
+                            <td>
+                                @Html.Value(property.Name))
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
+
+public class People : List<Person>
+{
+    public string GroupName { get; set; }    
+}
+
+public class Person 
+{
+    [Display(AutoGenerateField = true, Name = "First Name")]
+    public string FirstName {get; set;}
+
+    [Display(AutoGenerateField = true, Name = "Last Name")]
+    public string LastName {get; set;}
+
+    [Display(AutoGenerateField = true, Name = "Age")]
+    public int Age {get; set;}
+
+    [Display(AutoGenerateField = true, Name = "City")]
+    public string City {get; set;}
+}

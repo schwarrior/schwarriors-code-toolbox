@@ -1,0 +1,11 @@
+# VS Code settings
+.vscode
+
+# Node packages
+node_modules
+
+# Beyond Compare backup files
+*.~*
+
+# temporary batch files etc
+temp

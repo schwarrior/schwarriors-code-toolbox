@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Submit Form from Link with Javascript
+        </title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        
+        <script type="text/javascript">
+            function submitForm(item3Value)
+            {
+                $('#item3').val(item3Value);
+                $('#myform').submit();
+            }
+
+            $(function () {
+                if (document.location.search.length > 0) {
+                    // query string exists
+                    $('#formrecieveddiv').removeClass("hidden");
+                    $('#formcontent').html(document.location.search);
+                } 
+            });
+        </script>
+        <style>
+            .hidden {
+                visibility: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="formrecieveddiv" class="hidden">
+            <h1>
+                Form submission recieved.
+            </h1>
+            <p id="formcontent"></p>
+            <hr/>    
+        </div>
+        <h1>
+            Submit Form from Link with Javascript
+        </h1>
+        <form id="myform" name="myform" method="GET" action="">
+            Item 1: <input type="text" id="item1" name="item1" />
+            <br />
+            Item 2: <input type="text" id="item2" name="item2" />
+            <br />
+            <input type="hidden" id="item3" name="item3" />
+            <!--NOTE voiding the href is an essential step-->
+            <a href="javascript:void(0);" onclick="javascript: submitForm('A');" title="Submit A">Submit A</a>
+            <br />
+            <a href="javascript:void(0);" onclick="javascript: submitForm('B');" title="Submit B">Submit B</a>
+        </form>
+        
+    </body>
+</html>

@@ -1,0 +1,1 @@
+select @@SERVERNAME as ServerName, db_name() as DBName

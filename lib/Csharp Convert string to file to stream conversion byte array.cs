@@ -1,0 +1,54 @@
+public class StringConversion
+    {
+        /// <summary>
+        /// Convert string to stream
+        /// </summary>
+        /// <param name="inString"></param>
+        /// <returns></returns>
+        public static Stream ConvertStringToStream(string inString)
+        {
+            byte[] byteArray = Encoding.UTF8.GetBytes(inString);
+            var stream = new MemoryStream(byteArray);
+            return stream;
+        }
+
+        /// <summary>
+        /// Convert stream to string
+        /// </summary>
+        /// <param name="inStream"></param>
+        /// <returns></returns>
+        public static string ConvertStreamToString(Stream inStream)
+        {
+            var reader = new StreamReader(inStream);
+            string text = reader.ReadToEnd();
+            return text;
+        }
+
+		public static void StringToFile(string filePath, string text)
+        {
+            File.WriteAllText(filePath, text);
+        }
+
+        public static async Task<bool> StringToFileAsync(string filePath, string text)
+        {
+            var encodedText = Encoding.Unicode.GetBytes(text);
+            using (var sourceStream = new FileStream(filePath,
+                FileMode.Append, FileAccess.Write, FileShare.None,
+                bufferSize: 4096, useAsync: true))
+            {
+                await sourceStream.WriteAsync(encodedText, 0, encodedText.Length);
+                return true;
+            };
+        }
+		
+		 private static void StreamToFile(Stream inputStream, string outputFileFullPath)
+        {
+            using (var fileStream = File.Create(outputFileFullPath))
+            {
+                inputStream.Seek(0, SeekOrigin.Begin);
+                inputStream.CopyTo(fileStream);
+            }
+        }
+		
+    }
+

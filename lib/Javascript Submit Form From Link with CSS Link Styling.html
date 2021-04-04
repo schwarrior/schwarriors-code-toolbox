@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Submit Form from Link with Javascript
+    </title>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            if (document.location.search.length > 0) {
+                // query string exists
+                $('#formrecieveddiv').removeClass("hidden");
+                $('#formcontent').html(document.location.search);
+            }
+        });
+    </script>
+    <style>
+        .hidden {
+            visibility: hidden;
+        }
+
+        .buttonastext {
+            overflow: visible; /* Shrinkwrap the text in IE7- */
+            margin: 0;
+            padding: 0;
+            border: 0;
+            color: blue; /* Match your link colour */
+            background: transparent;
+            font: inherit; /* Inherit font settings (doesn’t work in IE7-) */
+            line-height: normal; /* Override line-height to avoid spacing issues */
+            text-decoration: underline; /* Make it look linky */
+            cursor: pointer; /* Buttons don’t make the cursor change in all browsers */
+            -moz-user-select: text; /* Make button text selectable in Gecko */
+        }
+            /* Make sure keyboard users get visual feedback */
+            .buttonastext:hover,
+            .buttonastext:focus {
+                color: blue;
+                /*background-color: #e3e0d1;*/
+            }
+            /* Remove mystery padding in Gecko browsers.
+                 * See https://bugzilla.mozilla.org/show_bug.cgi?id=140562
+                 */
+            .buttonastext::-moz-focus-inner {
+                padding: 0;
+                border: 0;
+            }
+    </style>
+</head>
+<body>
+    <div id="formrecieveddiv" class="hidden">
+        <h1>
+            Form submission recieved.
+        </h1>
+        <p id="formcontent"></p>
+        <hr />
+    </div>
+    <h1>
+        Submit Form from Link with Javascript
+    </h1>
+    <form id="myform" name="myform" method="GET" action="">
+        Item 1: <input type="text" id="item1" name="item1" />
+        <br />
+        Item 2: <input type="text" id="item2" name="item2" />
+        <br />
+        <input type="submit" id="submit1" name="submit1" value="Submit 1" class="buttonastext" title="Submit 1" />
+        <br />
+        <input type="submit" id="submit2" name="submit2" value="Submit 2" class="buttonastext" title="Submit 2" />
+    </form>
+    <br />
+    <br />
+    <a href="#" title="Standard link for style reference">Standard link for style reference</a>
+
+</body>
+</html>
