@@ -2,7 +2,7 @@ enum colors { red, green, blue };
 
 // Will be converted essentially to this:
 
-var colors = { red: 0, green: 1, blue: 2,
+var colorsAsCompiled = { red: 0, green: 1, blue: 2,
                [0]: "red", [1]: "green", [2]: "blue" }
 
 // Because of this, the following will be true:
