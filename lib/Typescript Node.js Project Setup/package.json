@@ -1,0 +1,26 @@
+{
+  "name": "typescript-node-starter",
+  "version": "0.0.1",
+  "description": "This sparse Node.js program project demonstates one working starter configuration for NPM, Typescript, Lint and VS Code",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/schwarrior/typescript-node-starter.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/schwarrior/typescript-node-starter/issues"
+  },
+  "homepage": "https://github.com/schwarrior/typescript-node-starter#readme",
+  "devDependencies": {
+    "@types/node": "^15.12.2",
+    "@typescript-eslint/eslint-plugin": "^4.26.1",
+    "@typescript-eslint/parser": "^4.26.1",
+    "eslint": "^7.28.0",
+    "typescript": "^4.3.2"
+  }
+}
