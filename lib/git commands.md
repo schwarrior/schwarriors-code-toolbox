@@ -13,6 +13,11 @@ Create an empty Git repository in the specified directory (for local onlyshared 
 $ git init --bare <directory>
 ```
 
+Add a submodule into a subfolder
+```Shell
+$ git submodule add https://github.com/chaconinc/DbConnector
+```
+
 Update local repo and submodules
 ```Shell
 $ git pull
