@@ -4,22 +4,20 @@ schwarriors-code-toolbox
 █▀ █▀▀ █░█ █░█░█ ▄▀█ █▀█ █▀█ █ █▀█ █▀█ ▀ █▀
 ▄█ █▄▄ █▀█ ▀▄▀▄▀ █▀█ █▀▄ █▀▄ █ █▄█ █▀▄ ░ ▄█
 
-░█▀▀█ █▀▀█ █▀▀▄ █▀▀ 
-░█─── █──█ █──█ █▀▀ 
-░█▄▄█ ▀▀▀▀ ▀▀▀─ ▀▀▀ 
+█▀▀ █▀█ █▀▄ █▀▀
+█▄▄ █▄█ █▄▀ ██▄
 
-▀▀█▀▀ █▀▀█ █▀▀█ █── █▀▀▄ █▀▀█ █─█ 
-─░█── █──█ █──█ █── █▀▀▄ █──█ ▄▀▄ 
-─░█── ▀▀▀▀ ▀▀▀▀ ▀▀▀ ▀▀▀─ ▀▀▀▀ ▀─▀
+▀█▀ █▀█ █▀█ █░░ █▄▄ █▀█ ▀▄▀
+░█░ █▄█ █▄█ █▄▄ █▄█ █▄█ █░█
 
 
-# Welcome to Schwarrior's Code Toolbox
+# Welcome
 
-A library of reusable solutions for software development.
+This is a library of reusable solutions for software development.
 
 ## Overview
 
-This is a library of code snippets in a variety of languages.
+The library is mostly code snippets in a variety of languages.
 
 Over the last 25 years working as a software developer and a DBA, I found myself returning to the patterns and solutions in this toolbox again and again.
 
