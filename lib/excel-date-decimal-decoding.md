@@ -17,7 +17,13 @@ Perhaps I can decode them back into ANSI (SQL Server) format
 # Conclusion
 
 The integer part of the date number is the number of days since 1/1/1900			
-The decimal part of the date number is the fraction of the day elapsed. Translates to time.			
+The decimal part of the date number is the fraction of the day elapsed. Translates to time.
+However, it turns out that the xmlx package will format date columns the way they look on the sheet.
+The secret is to provide the option raw: false to the sheet_to_json method.
+
+```javaScript
+const rows = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], {raw: false});
+```
 
 # Analysis			
 
@@ -41,4 +47,3 @@ Day of Year	0.397260274
 Ratio Numerator	0.397260274	145
 Ratio Denominator	1	365
 Day of Year	145
-
