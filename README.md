@@ -23,6 +23,8 @@ Over the last 25 years working as a software developer and a DBA, I found myself
 
 The sample code files that comprise the library can be found in the [lib folder](https://github.com/schwarrior/schwarriors-code-toolbox/tree/main/lib).
 
+Reference documents are found in the [ref folder](https://github.com/schwarrior/schwarriors-code-toolbox/tree/main/ref). These are resources created and maintained by other parties.
+
 There are also utility scripts used for mantaining the library. See the [util folder](https://github.com/schwarrior/schwarriors-code-toolbox/tree/main/util) folder.
 
 ## Development Roadmap
