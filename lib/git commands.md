@@ -39,14 +39,22 @@ $ git checkout <feature_branch>
 $ rem additional commands necessary to be able to run git pull and pull <feature_branch> by default
 ```
 
-Merge branch with master & sync with remote
+Merge feature-branch into main
 ```Shell
-$ git checkout master
-$ git branch --set-upstream-to=origin/master master
-$ git pull origin master
-$ git merge <feature_branch>
-$ git push origin master
-
+$ git checkout feature-branch
+$ # if error, branch must be created locally with $ git branch feature-branch # then rerun checkout
+$ git push
+$ git pull
+$ # if push or pull issues run $ git branch --set-upstream-to=origin/feature-branch feature-branch # then rerun push and pull
+$ git checkout main
+$ # if error, branch must be created locally with $ git branch main # then rerun checkout
+$ git push
+$ git pull
+$ # if push or pull issues run $ git branch --set-upstream-to=origin/main main # then rerun push and pull
+$ git merge feature-branch
+$ # check source for any merge conflicts and correct
+$ # if corrections $ git commit -am "resolve conflicts from merge of feature-branch into main"
+$ git push
 ```
 
 Push a local Repo to a new remote origin
