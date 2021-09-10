@@ -2,6 +2,19 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "JS Launch Current File",
+			"type": "pwa-node",
+            "request": "launch",
+            "program": "${file}"
+        },
+        {
+			"name": "PS Launch Current File",
+			"type": "PowerShell",
+			"request": "launch",
+			"script": "${file}",
+			"cwd": "${file}"
+		},
+        {
             "type": "pwa-node",
             "request": "launch",
             "name": "Move from Root to Library",
