@@ -1,6 +1,6 @@
-Imports System
-Imports System.Diagnostics
+Imports System.IO
 Imports System.Reflection
+Imports System.Text
 
 Public Class TraceWriter
     Private Shared _traceSourceName As String = "SampleProgram"
