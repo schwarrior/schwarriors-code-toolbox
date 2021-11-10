@@ -1,6 +1,6 @@
-using System;
-using System.Diagnostics;
+using System.IO;
 using System.Reflection;
+using System.Text;
 
 // this can be used for logging across projects
 // known working pattern: TraceWriter class in referenced assembly. systemdiagnostics config entries in executing startup project
