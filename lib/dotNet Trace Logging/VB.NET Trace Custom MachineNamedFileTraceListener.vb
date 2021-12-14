@@ -7,35 +7,28 @@ Public Class MachineNamedFileTraceListener
         MyBase.New(initializeData.Replace(".log", "." & Environment.MachineName & ".log"))
     End Sub
 
+    ''' <summary>
+    ''' For each traced event, the trace source first calls write with prefixing meta data only
+    ''' Then the trace source calls writeline with the message body only, which appends onto the previous write content
+    ''' So by hooking write and not writeline, we are able to change the the prefixing metadata on each event
+    ''' </summary>
+    ''' <param name="message"></param>
     Public Overrides Sub Write(ByVal message As String)
-        Dim fMessage = FormatMessage(message)
+        'Discard the second prefix element: typically the event code
+        'to do: enhance this method to discard the UTC date meta data which might also be provided if configured in the .config
+        Dim colonSplit = message.Split(CType(":", Char()))
+        Dim fMessage = FormatMessage(colonSplit(0))
         MyBase.Write(fMessage)
     End Sub
 
-    Public Overrides Sub Write(ByVal message As String, ByVal category As String)
-        Dim fMessage = FormatMessage(message, category)
-        MyBase.Write(fMessage)
-    End Sub
-
-    Public Overrides Sub WriteLine(ByVal message As String)
-        Dim fMessage = FormatMessage(message)
-        MyBase.WriteLine(fMessage)
-    End Sub
-
-    Public Overrides Sub WriteLine(ByVal message As String, ByVal category As String)
-        Dim fMessage = FormatMessage(message, category)
-        MyBase.WriteLine(fMessage)
-    End Sub
-
-    Private Function FormatMessage(ByVal message As String, Optional ByVal category As String = "Information") As String
+    Private Function FormatMessage(ByVal message As String) As String
         Dim sb As StringBuilder = New StringBuilder()
         sb.Append(DateTime.Now)
         sb.Append(vbTab)
         sb.Append(Environment.MachineName)
         sb.Append(vbTab)
-        sb.Append(category)
-        sb.Append(vbTab)
         sb.Append(message)
+        sb.Append(vbTab)
         Return sb.ToString()
     End Function
 
