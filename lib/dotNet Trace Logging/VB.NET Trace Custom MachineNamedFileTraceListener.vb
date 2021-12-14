@@ -1,7 +1,5 @@
 Imports System.Text
 
-Namespace SampleProgram
-
 Public Class MachineNamedFileTraceListener
     Inherits TextWriterTraceListener
 
@@ -45,18 +43,16 @@ End Class
 
 ' SAMPLE CONFIG FILE SETUP
 
-' <system.diagnostics>
-' 	<sharedListeners>
-' 		<add name="machineNamedFileListener" type="SampleProgram.MachineNamedFileListener, SampleProgram"  initializeData="c:\temp\SampleProgram.log" />
-' 	</sharedListeners>
-' 	<sources>
-' 		<source name="SampleProgram" switchValue="Information" >
-' 		<listeners>
-' 			<remove name="Default" />
-' 			<add name="machineNamedFileListener" />
-' 		</listeners>
-' 		</source>
-' 	</sources>
-' </system.diagnostics>
-
-End Namespace
+'   <system.diagnostics>
+'     <sharedListeners>
+' 	  <add name="machineNamedFileTraceListener" type="SampleProgram.MachineNamedFileTraceListener, SampleProgram"  initializeData="c:\temp\SampleProgram.log" />
+'     </sharedListeners>
+'     <sources>
+'       <source name="SampleProgram" switchValue="Information" >
+'         <listeners>
+'           <remove name="Default" />
+' 		  <add name="machineNamedFileTraceListener" />
+'         </listeners>
+'       </source>
+'     </sources>
+'   </system.diagnostics>
