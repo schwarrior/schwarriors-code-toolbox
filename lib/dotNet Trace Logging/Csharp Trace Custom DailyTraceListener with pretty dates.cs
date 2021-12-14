@@ -2,16 +2,17 @@
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using Microsoft.VisualBasic;
 
-namespace DotNetDatedLogFileLab
+namespace SampleProgram
 {
-    public class DailyTraceListenerGen1 : TraceListener
+    public class DailyTraceListener : TraceListener
     {
         private readonly string _logFileLocation;
         private DateTime _currentDate;
-        StreamWriter _traceWriter;
+        private StreamWriter _traceWriter;
 
-        public DailyTraceListenerGen1(string fileName)
+        public DailyTraceListener(string fileName)
         {
             _logFileLocation = fileName;
             _traceWriter = new StreamWriter(GenerateFileName(), true);
@@ -20,29 +21,42 @@ namespace DotNetDatedLogFileLab
         public override void Write(string message)
         {
             CheckRollover();
-            _traceWriter.Write(message);
+            var fMessage = FormatMessage(message);
+            _traceWriter.Write(fMessage);
         }
 
         public override void Write(string message, string category)
         {
             CheckRollover();
-            _traceWriter.Write(category + " " + message);
+            var fMessage = FormatMessage(message, category);
+            _traceWriter.Write(fMessage);
         }
-
 
         public override void WriteLine(string message)
         {
             CheckRollover();
-            StringBuilder sb = new StringBuilder();
-            sb.Append(DateTime.Now);
-            sb.Append(": ");
-            sb.Append(message);
-            _traceWriter.WriteLine(sb.ToString());
+            var fMessage = FormatMessage(message);
+            _traceWriter.WriteLine(fMessage);
         }
 
         public override void WriteLine(string message, string category)
         {
-            WriteLine(message);
+            CheckRollover();
+            var fMessage = FormatMessage(message, category);
+            _traceWriter.WriteLine(fMessage);
+        }
+
+        private void FormatLogLine(string message, string category = "Information")
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(DateTime.Now);
+            sb.Append(Constants.vbTab);
+            sb.Append(Environment.MachineName);
+            sb.Append(Constants.vbTab);
+            sb.Append(category);
+            sb.Append(Constants.vbTab);
+            sb.Append(message);
+            return sb.ToString();
         }
 
         private string GenerateFileName()
@@ -65,18 +79,14 @@ namespace DotNetDatedLogFileLab
             lock (this)
             {
                 if (_traceWriter != null)
-                {
                     _traceWriter.Flush();
-                }
             }
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
-            {
                 _traceWriter.Close();
-            }
         }
     }
 }
