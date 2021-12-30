@@ -4,7 +4,7 @@ Alter User SqlAuthUser With Login = SqlAuthUser;
 
 --or
 
-EXEC sp_change_users_login 'ReportUser';
+EXEC sp_change_users_login 'Report';
 
 EXEC sp_change_users_login 'update_one', 'SqlAuthUser', 'SqlAuthUser';
 
@@ -15,5 +15,5 @@ EXEC sp_change_users_login 'Auto_Fix', 'SqlAuthUser', NULL, 'password';
 use master;
 go
 DECLARE @command varchar(1000) 
-SELECT @command = 'select db_name(); exec sp_change_users_login @Action=''ReportUser'';' 
+SELECT @command = 'select db_name(); exec sp_change_users_login @Action=''Report'';' 
 EXEC sp_MSforeachdb @command
