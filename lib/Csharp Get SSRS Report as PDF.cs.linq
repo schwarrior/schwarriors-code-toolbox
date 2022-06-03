@@ -2,14 +2,17 @@
 
 void Main()
 {
-	ssrsServerUrl = "";
-	ssrsServerPath = "";
-	reportName = "HelloWorld";
-	params = new List<Tuple<string, string>>();
-	saveFile = $"c:\temp\helloworld.{System.DateTime.Now.Ticks}.pdf";
+	var ssrsServerUrl = "http://SsrsServer1/ReportServer";
+	var ssrsServerPath = "ProjectA/Dev";
+	var reportName = "HelloWorld";
+	var parameters = new List<Tuple<string,string>> {
+		new Tuple<string, string>("Color", "Red")
+	};
+	
+	var saveFile = $"C:\\Temp\\{reportName}.{System.DateTime.Now.Ticks}.pdf"
 	
 	var rptUtils = new SsrsUtilities(ssrsServerUrl, ssrsServerPath);
-	var byteSize = rptUtils.DownloadAndSaveReportPdf(reportName, params, saveFile)
+	var byteSize = rptUtils.DownloadAndSaveReportPdf(reportName, parameters, saveFile);
 	
 	Console.WriteLine($"Saved {byteSize} bytes to {saveFile}");
 }
@@ -35,29 +38,30 @@ public class SsrsUtilities
 		return byteSize;
 	}
 
-	public byte[] DownloadReportPdf (string ssrsReportName, 
-		IEnumerable<Tuple<string, string>> ssrsReportParams, string saveFileFullPath)
+	public byte[] DownloadReportPdf (string ssrsReportName, IEnumerable<Tuple<string, string>> ssrsReportParams)
 	{
 		var sb = new System.Text.StringBuilder();
-		sb.Append(ssrsReportServerUrl);
-		sb.Append("?");
-		sb.Append(ssrsReportServerPath);
-		sb.Append("/");
+		sb.Append(this._ssrsServerUrl);
+		if (!sb.ToString().EndsWith("/")) sb.Append("/");
+		sb.Append("Pages/ReportViewer.aspx?");
+		if (!this._ssrsServerPath.StartsWith("/")) sb.Append("/");
+		sb.Append(this._ssrsServerPath);
+		if (!sb.ToString().EndsWith("/")) sb.Append("/");
 		sb.Append(ssrsReportName);
 		foreach(var paramPair in ssrsReportParams)
 		{
 			var paramName = paramPair.Item1;
-			if (paramName.toLower() == ssrsReportName.toLower()) continue;
+			if (paramName.ToLower() == ssrsReportName.ToLower()) continue;
 			var paramValue = paramPair.Item2;
-			if (paramValue.toLower() == "hide") continue;
+			if (paramValue.ToLower() == "hide") continue;
             sb.AppendFormat("&{0}={1}", paramName, paramValue);
 		}
 		sb.Append("&rs:format=pdf");
     	var pdfDownloadUrl = sb.ToString();
-		Debug.Writeline(pdfDownloadUrl);
+		Debug.WriteLine(pdfDownloadUrl);
 		var request = new System.Net.WebClient();
 		request.UseDefaultCredentials = true;
-		request.Credentials = CredentialCache.DefaultCredentials;
+		request.Credentials = System.Net.CredentialCache.DefaultCredentials;
 		var fileData = request.DownloadData(pdfDownloadUrl);
 		return fileData;
 	}
