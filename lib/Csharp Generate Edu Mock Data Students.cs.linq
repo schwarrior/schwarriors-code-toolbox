@@ -13,7 +13,9 @@
 // Generate Edu Mock Data
 // Student Exam Registrations 
 //--------------------------------------------------------------------------------------
+
 // linqpad connection must be configured for ISEE db with "Include Additional Databases" checked. Add SampleData
+
 void Main()
 {
 	var g = new EduMockDataGenerator(this);
@@ -45,7 +47,7 @@ class EduMockDataGenerator
 	{
 		Console.WriteLine("Generate Edu Mock Data - Student Exam Registrations");
 
-		CheckClassConnections();
+		// CheckClassConnections();
 
 		var testSites = this.GetTestSites();
 		testSites.Dump();
@@ -66,19 +68,31 @@ class EduMockDataGenerator
 		return _rnd.Next(minValue, maxValue + 1);
 	}
 
-	object GetTestSites()
+	ICollection<LabelDoc> GetTestSites()
 	{
 		// use sample schools as test sites
-		foreach (var s in _db.SampleData.Schools.Skip(300).Take(15))
+		var lDocs = new List<LabelDoc>();
+		var schools = _db.SampleData.Schools.Skip(300).Take(15).ToList();
+		foreach (var s in schools)
 		{
-			Console.WriteLine(s.SchoolName);
-		}
+			var LabelStockId = "A20L";
+			var testDay = DateTime.Now.AddDays(7);
+			while (testDay.DayOfWeek != DayOfWeek.Monday) { testDay.AddDays(1); }
+			var TestDate = new DateTime(testDay.Year, testDay.Month, testDay.Day, 9, 0, 0);
+			var SiteCode = GetRandomInt();
+			var SiteName = s.SchoolName;
+			var shortYear = testDay.Year.ToString().Substring(2);
+			var SaveFilePath = $"{shortYear}, {testDay.Month.ToString().PadLeft(2)}, {testDay.Day.ToString().PadLeft(2)}\\{SiteCode}.pdf";
+			var Level = "PRIMARY";
+			var lDoc = new LabelDoc();
+			lDoc.LabelStockId = LabelStockId;
+			lDoc.TestDate = TestDate;
+			lDoc.SiteCode = SiteCode;
+			lDoc.SaveFilePath = SaveFilePath;
+			// lDoc.Label = Label
+			lDocs.Add(lDoc);
+		} 
+		return lDocs;
+	} 
 
-		//Add a random 6 digit site code
-		//Add Level, always "PRIMARY"
-
-		return new object();
-	}
-
-	
-}
+} 
