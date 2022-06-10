@@ -14,13 +14,13 @@
 // Student Exam Registrations 
 //--------------------------------------------------------------------------------------
 // linqpad connection must be configured for ISEE db with "Include Additional Databases" checked. Add SampleData
-void main()
+void Main()
 {
-	var g = new EduModkDataGenerator(this);
+	var g = new EduMockDataGenerator(this);
 	g.Generate();
 }
 
-class EduModkDataGenerator
+class EduMockDataGenerator
 {
 	UserQuery _db;
 
@@ -36,7 +36,7 @@ class EduModkDataGenerator
 		}
 	}
 
-	public EduModkDataGenerator(UserQuery db)
+	public EduMockDataGenerator(UserQuery db)
 	{
 		this._db = db;
 	}
@@ -82,4 +82,3 @@ class EduModkDataGenerator
 
 	
 }
-
