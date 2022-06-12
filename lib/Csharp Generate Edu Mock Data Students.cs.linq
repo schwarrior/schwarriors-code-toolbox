@@ -70,29 +70,31 @@ class EduMockDataGenerator
 
 	ICollection<LabelDoc> GetTestSites()
 	{
-		// use sample schools as test sites
+		var LabelStockId = "A20L";
+		var Level = "PRIMARY";
+		var testDay = DateTime.Now.AddDays(7);
+		while (testDay.DayOfWeek != DayOfWeek.Monday) { testDay = testDay.AddDays(1); }
+		var TestDate = new DateTime(testDay.Year, testDay.Month, testDay.Day, 9, 0, 0);
+		var shortYear = testDay.Year.ToString().Substring(2);
+		var dateFolderName = $"{shortYear}{testDay.Month.ToString().PadLeft(2,'0')}{testDay.Day.ToString().PadLeft(2,'0')}";
+		
 		var lDocs = new List<LabelDoc>();
 		var schools = _db.SampleData.Schools.Skip(300).Take(15).ToList();
+		
 		foreach (var s in schools)
 		{
-			var LabelStockId = "A20L";
-			var testDay = DateTime.Now.AddDays(7);
-			while (testDay.DayOfWeek != DayOfWeek.Monday) { testDay.AddDays(1); }
-			var TestDate = new DateTime(testDay.Year, testDay.Month, testDay.Day, 9, 0, 0);
 			var SiteCode = GetRandomInt();
 			var SiteName = s.SchoolName;
-			var shortYear = testDay.Year.ToString().Substring(2);
-			var SaveFilePath = $"{shortYear}, {testDay.Month.ToString().PadLeft(2)}, {testDay.Day.ToString().PadLeft(2)}\\{SiteCode}.pdf";
-			var Level = "PRIMARY";
+			var SaveFilePath = $"{dateFolderName}\\{SiteCode}.pdf";
+			
 			var lDoc = new LabelDoc();
 			lDoc.LabelStockId = LabelStockId;
 			lDoc.TestDate = TestDate;
 			lDoc.SiteCode = SiteCode;
 			lDoc.SaveFilePath = SaveFilePath;
-			// lDoc.Label = Label
 			lDocs.Add(lDoc);
 		} 
 		return lDocs;
 	} 
 
-} 
+}
