@@ -49,8 +49,24 @@ class EduMockDataGenerator
 
 		// CheckClassConnections();
 
-		var testSites = this.GetTestSites();
+		Console.WriteLine("Selecting test sites");
+		var testSites = this.GetTestSites();		
 		testSites.Dump();
+
+		foreach(var site in testSites)
+		{
+			Console.WriteLine($"Saving site {site.SiteName} to DB as LabelDoc record");
+			var savedSiteCount = this.SaveTestSite(site);
+			Console.WriteLine($"Saved {savedSiteCount} site{ ( savedSiteCount == 0 || savedSiteCount > 1 ? "s" : string.Empty )} to DB");
+
+			Console.WriteLine($"Selecting students for test site {site.SiteName}");
+			var students = this.GetStudentsForSite(site);
+			Console.WriteLine("Selected students:");
+			students.Dump();
+			Console.WriteLine("Saving students to DB as Label records");
+			var savedStuCount = this.saveTestSiteStudents(site, students);
+			Console.WriteLine($"Saved {savedStuCount} student{ ( savedStuCount == 0 || savedStuCount > 1 ? "s" : string.Empty )} to DB");
+		}
 
 		Console.WriteLine("Done");
 	}
@@ -68,7 +84,7 @@ class EduMockDataGenerator
 		return _rnd.Next(minValue, maxValue + 1);
 	}
 
-	ICollection<LabelDoc> GetTestSites()
+	ICollection<LabelDoc> GetTestSites(int siteCount = 5)
 	{
 		var LabelStockId = "A20L";
 		var Level = "PRIMARY";
@@ -79,7 +95,8 @@ class EduMockDataGenerator
 		var dateFolderName = $"{shortYear}{testDay.Month.ToString().PadLeft(2,'0')}{testDay.Day.ToString().PadLeft(2,'0')}";
 		
 		var lDocs = new List<LabelDoc>();
-		var schools = _db.SampleData.Schools.Skip(300).Take(15).ToList();
+		var skip = GetRandomInt(0, _db.SampleData.Schools.Count() - 1 - siteCount);
+		var schools = _db.SampleData.Schools.Skip(skip).Take(siteCount).ToList();
 		
 		foreach (var s in schools)
 		{
@@ -88,13 +105,30 @@ class EduMockDataGenerator
 			var SaveFilePath = $"{dateFolderName}\\{SiteCode}.pdf";
 			
 			var lDoc = new LabelDoc();
+			
 			lDoc.LabelStockId = LabelStockId;
 			lDoc.TestDate = TestDate;
 			lDoc.SiteCode = SiteCode;
+			lDoc.SiteName = SiteName;
 			lDoc.SaveFilePath = SaveFilePath;
 			lDocs.Add(lDoc);
 		} 
 		return lDocs;
-	} 
+	}
+
+	int SaveTestSite(LabelDoc testSites)
+	{
+		return 0;
+	}
+
+	ICollection<Label> GetStudentsForSite(LabelDoc site)
+	{
+		var lbls = new List<Label>();
+		return lbls;
+	}
+	
+	int saveTestSiteStudents(LabelDoc site, ICollection<Label> students) {
+		return 0;
+	}
 
 }
