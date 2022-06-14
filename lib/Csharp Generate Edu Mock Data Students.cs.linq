@@ -19,16 +19,57 @@
 void Main()
 {
 	var g = new EduMockDataGenerator(this);
-	g.Generate();
+	g.generate();
 }
 
 class EduMockDataGenerator
 {
+	public EduMockDataGenerator(UserQuery db)
+	{
+		this._db = db;
+	}
+
+	public void generate()
+	{
+		Console.WriteLine("Generate Edu Mock Data - Student Exam Registrations");
+
+		CheckClassConnections();
+
+		Console.WriteLine("Selecting test sites");
+		var testSites = this.GetTestSites(3);
+		testSites.Dump();
+
+		foreach (var site in testSites)
+		{
+			Console.WriteLine($"Saving site {site.SiteName} to DB as LabelDoc record");
+			var savedSiteCount = this.SaveTestSite(site);
+			Console.WriteLine($"Saved {savedSiteCount} site{ (savedSiteCount == 0 || savedSiteCount > 1 ? "s" : string.Empty)} to DB");
+			Console.WriteLine($"Selecting students for test site {site.SiteName}");
+			var rndStudCount = GetRandomInt(Convert.ToInt32(Math.Ceiling(labelsPerPage/4D)), Convert.ToInt32(Math.Floor(labelsPerPage*2.5)));
+			var appendGenericCount = Convert.ToInt32(Math.Ceiling(rndStudCount*genericsPerPreId));
+			var studLabels = GetPreIdStudentsForSite(site, rndStudCount);
+			AppendGenericLabelsForSite(site, appendGenericCount, ref studLabels);
+			Console.WriteLine("Selected students:");
+			studLabels.Dump();
+			Console.WriteLine("Saving students to DB as Label records");
+			var savedStuCount = this.saveTestSiteStudents(site, studLabels);
+			Console.WriteLine($"Saved {savedStuCount} student{ (savedStuCount == 0 || savedStuCount > 1 ? "s" : string.Empty)} to DB");
+		}
+
+		Console.WriteLine("Done");
+	}
+
+	const int labelsPerPage = 20;
+	
+	const double genericsPerPreId = .25;
+	
+	const string labelStockId = "A20L";
+	
 	UserQuery _db;
 
-	private Random __rnd = null;
+	Random __rnd = null;
 
-	private Random _rnd
+	Random _rnd
 	{
 		get
 		{
@@ -38,9 +79,9 @@ class EduMockDataGenerator
 		}
 	}
 
-	private IList<string> __firstNames = null;
+	IList<string> __firstNames = null;
 
-	private IList<string> _firstNames
+	IList<string> _firstNames
 	{
 		get
 		{
@@ -52,52 +93,33 @@ class EduMockDataGenerator
 		}
 	}
 
-	private IList<string> __lastNames = null;
+	string getRandomFirstName() 
+	{
+		var moveIndex = GetRandomInt(0, _firstNames.Count() - 1);
+		return _firstNames[moveIndex];
+	}
 
-	private IList<string> _lastNames
+	IList<string> __lastNames = null;
+
+	IList<string> _lastNames
 	{
 		get
 		{
 			if (__lastNames == null)
 			{
-				__lastNames = _db.SampleData.lastNames.Select(fn => fn.Content).ToList();
+				__lastNames = _db.SampleData.LastNames.Select(fn => fn.Content).ToList();
 			}
 			return __lastNames;
 		}
 	}
 
-	public EduMockDataGenerator(UserQuery db)
+	string getRandomLastName()
 	{
-		this._db = db;
+		var moveIndex = GetRandomInt(0, _lastNames.Count() - 1);
+		return _lastNames[moveIndex];
 	}
-	
-	public void Generate()
-	{
-		Console.WriteLine("Generate Edu Mock Data - Student Exam Registrations");
 
-		CheckClassConnections();
 
-		Console.WriteLine("Selecting test sites");
-		var testSites = this.GetTestSites();		
-		testSites.Dump();
-
-		foreach(var site in testSites)
-		{
-			Console.WriteLine($"Saving site {site.SiteName} to DB as LabelDoc record");
-			var savedSiteCount = this.SaveTestSite(site);
-			Console.WriteLine($"Saved {savedSiteCount} site{ ( savedSiteCount == 0 || savedSiteCount > 1 ? "s" : string.Empty )} to DB");
-
-			Console.WriteLine($"Selecting students for test site {site.SiteName}");
-			var students = this.GetStudentsForSite(site);
-			Console.WriteLine("Selected students:");
-			students.Dump();
-			Console.WriteLine("Saving students to DB as Label records");
-			var savedStuCount = this.saveTestSiteStudents(site, students);
-			Console.WriteLine($"Saved {savedStuCount} student{ ( savedStuCount == 0 || savedStuCount > 1 ? "s" : string.Empty )} to DB");
-		}
-
-		Console.WriteLine("Done");
-	}
 
 
 	void CheckClassConnections()
@@ -115,10 +137,8 @@ class EduMockDataGenerator
 		return _rnd.Next(minValue, maxValue + 1);
 	}
 
-	ICollection<LabelDoc> GetTestSites(int siteCount = 5)
+	ICollection<LabelDoc> GetTestSites(int siteCount)
 	{
-		var LabelStockId = "A20L";
-		var Level = "PRIMARY";
 		var testDay = DateTime.Now.AddDays(7);
 		while (testDay.DayOfWeek != DayOfWeek.Monday) { testDay = testDay.AddDays(1); }
 		var TestDate = new DateTime(testDay.Year, testDay.Month, testDay.Day, 9, 0, 0);
@@ -137,7 +157,7 @@ class EduMockDataGenerator
 			
 			var lDoc = new LabelDoc();
 			
-			lDoc.LabelStockId = LabelStockId;
+			lDoc.LabelStockId = labelStockId;
 			lDoc.TestDate = TestDate;
 			lDoc.SiteCode = SiteCode;
 			lDoc.SiteName = SiteName;
@@ -152,12 +172,68 @@ class EduMockDataGenerator
 		return 0;
 	}
 
-	ICollection<Label> GetStudentsForSite(LabelDoc site)
+	IList<Label> GetPreIdStudentsForSite(LabelDoc site, int studentCount)
 	{
-		var lbls = new List<Label>();
-		return lbls;
+		var studentLabels = new List<Label>();
+		var lastLabel = studentLabels.LastOrDefault();
+		short pageNum = lastLabel?.PageNumber ?? 1;
+		byte lblNum = lastLabel?.LabelNumber ?? 1;
+		for(int i = 0; i < studentCount; i++ )
+		{
+			if (lblNum > labelsPerPage)
+			{
+				pageNum ++;
+				lblNum = 1;
+			}
+			var lbl = new Label();
+			lbl.PageNumber = pageNum;
+			lbl.LabelNumber = lblNum;
+			lbl.LabelDocId = site.LabelDocId;
+			lbl.PreRegister = true;
+			lbl.SiteCode = site.SiteCode.ToString();
+			lbl.SiteName = site.SiteName;
+			lbl.TestDateTime = site.TestDate.ToString();
+			var first = this.getRandomFirstName();
+			var last = this.getRandomLastName();
+			lbl.StudentName = $"{last}, {first}";
+			lbl.IseeId = this.GetRandomInt(100000,999999).ToString();
+			var grade = this.GetRandomInt(2,4);
+			lbl.GradeLevel = $"PRIMARY{grade}";
+			studentLabels.Add(lbl);
+			lblNum++;
+		}
+		return studentLabels;
 	}
-	
+
+	void AppendGenericLabelsForSite(LabelDoc site, int studentCount, ref IList<Label> studentLabels)
+	{
+		var lastLabel = studentLabels.LastOrDefault();
+		short pageNum = lastLabel?.PageNumber ?? 1;
+		byte lblNum = lastLabel?.LabelNumber ?? 1;
+		for (int i = 0; i < studentCount; i++)
+		{
+			if (lblNum > labelsPerPage)
+			{
+				pageNum++;
+				lblNum = 1;
+			}
+			var lbl = new Label();
+			lbl.PageNumber = pageNum;
+			lbl.LabelNumber = lblNum;
+			lbl.LabelDocId = site.LabelDocId;
+			lbl.PreRegister = false;
+			lbl.SiteCode = site.SiteCode.ToString();
+			lbl.SiteName = site.SiteName;
+			lbl.TestDateTime = site.TestDate.ToString();
+			lbl.StudentName = $"Walk In";
+			lbl.IseeId = this.GetRandomInt(100000, 999999).ToString();
+			var grade = this.GetRandomInt(2, 4);
+			lbl.GradeLevel = $"PRIMARY{grade}";
+			studentLabels.Add(lbl);
+			lblNum++;
+		}
+	}
+
 	int saveTestSiteStudents(LabelDoc site, ICollection<Label> students) {
 		return 0;
 	}
