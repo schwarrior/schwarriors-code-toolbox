@@ -38,6 +38,34 @@ class EduMockDataGenerator
 		}
 	}
 
+	private IList<string> __firstNames = null;
+
+	private IList<string> _firstNames
+	{
+		get
+		{
+			if (__firstNames == null)
+			{ 
+				__firstNames = _db.SampleData.FirstNames.Select(fn => fn.Content).ToList();
+			}
+			return __firstNames;
+		}
+	}
+
+	private IList<string> __lastNames = null;
+
+	private IList<string> _lastNames
+	{
+		get
+		{
+			if (__lastNames == null)
+			{
+				__lastNames = _db.SampleData.lastNames.Select(fn => fn.Content).ToList();
+			}
+			return __lastNames;
+		}
+	}
+
 	public EduMockDataGenerator(UserQuery db)
 	{
 		this._db = db;
@@ -47,7 +75,7 @@ class EduMockDataGenerator
 	{
 		Console.WriteLine("Generate Edu Mock Data - Student Exam Registrations");
 
-		// CheckClassConnections();
+		CheckClassConnections();
 
 		Console.WriteLine("Selecting test sites");
 		var testSites = this.GetTestSites();		
@@ -74,8 +102,11 @@ class EduMockDataGenerator
 
 	void CheckClassConnections()
 	{
+		Console.WriteLine("Checking DB Connectivity from class");
 		_db.LabelStocks.Dump();
-		_db.SampleData.Schools.Skip(200).Take(5).Dump();
+		// _db.SampleData.Schools.Skip(200).Take(5).Dump();
+		this._firstNames.Take(5).Dump();
+		Console.WriteLine("Connectivity verified");
 	}
 
 
