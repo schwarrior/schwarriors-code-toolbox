@@ -242,7 +242,8 @@ class EduMockDataGenerator
 	{
 		var lastLabel = studentLabels.LastOrDefault();
 		short pageNum = lastLabel?.PageNumber ?? 1;
-		byte lblNum = lastLabel?.LabelNumber ?? 1;
+		byte lblNum = lastLabel?.LabelNumber ?? 0;
+		lblNum ++;
 		for (int i = 0; i < studentCount; i++)
 		{
 			if (lblNum > labelsPerPage)
