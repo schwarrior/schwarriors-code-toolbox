@@ -33,26 +33,26 @@ class EduMockDataGenerator
 	{
 		Console.WriteLine("Generate Edu Mock Data - Student Exam Registrations");
 
-		CheckClassConnections();
+		checkClassConnections();
 
 		Console.WriteLine("Selecting test sites");
-		var testSites = this.GetTestSites(3);
+		var testSites = this.getTestSites(3);
 		testSites.Dump();
 
 		foreach (var site in testSites)
 		{
 			Console.WriteLine($"Saving site {site.SiteName} to DB as LabelDoc record");
-			var savedSiteCount = this.SaveTestSite(site);
+			var savedSiteCount = this.saveTestSite(site);
 			Console.WriteLine($"Saved {savedSiteCount} site{ (savedSiteCount == 0 || savedSiteCount > 1 ? "s" : string.Empty)} to DB");
 			Console.WriteLine($"Selecting students for test site {site.SiteName}");
-			var rndStudCount = GetRandomInt(Convert.ToInt32(Math.Ceiling(labelsPerPage/4D)), Convert.ToInt32(Math.Floor(labelsPerPage*2.5)));
+			var rndStudCount = getRandomInt(Convert.ToInt32(Math.Ceiling(labelsPerPage/4D)), Convert.ToInt32(Math.Floor(labelsPerPage*2.5)));
 			var appendGenericCount = Convert.ToInt32(Math.Ceiling(rndStudCount*genericsPerPreId));
-			var studLabels = GetPreIdStudentsForSite(site, rndStudCount);
-			AppendGenericLabelsForSite(site, appendGenericCount, ref studLabels);
+			var studLabels = getPreIdStudentsForSite(site, rndStudCount);
+			appendGenericLabelsForSite(site, appendGenericCount, ref studLabels);
 			Console.WriteLine("Selected students:");
 			studLabels.Dump();
 			Console.WriteLine("Saving students to DB as Label records");
-			var savedStuCount = this.saveTestSiteStudents(site, studLabels);
+			var savedStuCount = this.saveTestSiteStudents(studLabels);
 			Console.WriteLine($"Saved {savedStuCount} student{ (savedStuCount == 0 || savedStuCount > 1 ? "s" : string.Empty)} to DB");
 		}
 
@@ -95,7 +95,7 @@ class EduMockDataGenerator
 
 	string getRandomFirstName() 
 	{
-		var moveIndex = GetRandomInt(0, _firstNames.Count() - 1);
+		var moveIndex = getRandomInt(0, _firstNames.Count() - 1);
 		return _firstNames[moveIndex];
 	}
 
@@ -115,14 +115,14 @@ class EduMockDataGenerator
 
 	string getRandomLastName()
 	{
-		var moveIndex = GetRandomInt(0, _lastNames.Count() - 1);
+		var moveIndex = getRandomInt(0, _lastNames.Count() - 1);
 		return _lastNames[moveIndex];
 	}
 
 
 
 
-	void CheckClassConnections()
+	void checkClassConnections()
 	{
 		Console.WriteLine("Checking DB Connectivity from class");
 		_db.LabelStocks.Dump();
@@ -132,12 +132,12 @@ class EduMockDataGenerator
 	}
 
 
-	int GetRandomInt(int minValue = 100000, int maxValue = 999999)
+	int getRandomInt(int minValue = 100000, int maxValue = 999999)
 	{
 		return _rnd.Next(minValue, maxValue + 1);
 	}
 
-	ICollection<LabelDoc> GetTestSites(int siteCount)
+	ICollection<LabelDoc> getTestSites(int siteCount)
 	{
 		var testDay = DateTime.Now.AddDays(7);
 		while (testDay.DayOfWeek != DayOfWeek.Monday) { testDay = testDay.AddDays(1); }
@@ -146,14 +146,15 @@ class EduMockDataGenerator
 		var dateFolderName = $"{shortYear}{testDay.Month.ToString().PadLeft(2,'0')}{testDay.Day.ToString().PadLeft(2,'0')}";
 		
 		var lDocs = new List<LabelDoc>();
-		var skip = GetRandomInt(0, _db.SampleData.Schools.Count() - 1 - siteCount);
+		var skip = getRandomInt(0, _db.SampleData.Schools.Count() - 1 - siteCount);
 		var schools = _db.SampleData.Schools.Skip(skip).Take(siteCount).ToList();
 		
 		foreach (var s in schools)
 		{
-			var SiteCode = GetRandomInt();
+			var SiteCode = getRandomInt();
 			var SiteName = s.SchoolName;
-			var SaveFilePath = $"{dateFolderName}\\{SiteCode}.pdf";
+			var saveFilePathPreSlug = $"{dateFolderName}\\Labels-Primary-{SiteName}-{SiteCode}.pdf";
+			var SaveFilePath = slugEncode(saveFilePathPreSlug);
 			
 			var lDoc = new LabelDoc();
 			
@@ -175,7 +176,7 @@ class EduMockDataGenerator
 		return lDocs;
 	}
 
-	int SaveTestSite(LabelDoc testSite)
+	int saveTestSite(LabelDoc testSite)
 	{
 		_db.LabelDocs.InsertOnSubmit(testSite);
 		var recordsInserted = _db.GetChangeSet().Inserts.Count();
@@ -183,7 +184,7 @@ class EduMockDataGenerator
 		return recordsInserted;
 	}
 
-	IList<Label> GetPreIdStudentsForSite(LabelDoc site, int studentCount)
+	IList<Label> getPreIdStudentsForSite(LabelDoc site, int studentCount)
 	{
 		var studentLabels = new List<Label>();
 		var lastLabel = studentLabels.LastOrDefault();
@@ -207,8 +208,8 @@ class EduMockDataGenerator
 			var first = this.getRandomFirstName();
 			var last = this.getRandomLastName();
 			lbl.StudentName = $"{last}, {first}";
-			lbl.IseeId = this.GetRandomInt(100000,999999).ToString();
-			var grade = this.GetRandomInt(2,4);
+			lbl.IseeId = this.getRandomInt(100000,999999).ToString();
+			var grade = this.getRandomInt(2,4);
 			lbl.GradeLevel = $"PRIMARY{grade}";
 			studentLabels.Add(lbl);
 			lblNum++;
@@ -216,7 +217,7 @@ class EduMockDataGenerator
 		return studentLabels;
 	}
 
-	void AppendGenericLabelsForSite(LabelDoc site, int studentCount, ref IList<Label> studentLabels)
+	void appendGenericLabelsForSite(LabelDoc site, int studentCount, ref IList<Label> studentLabels)
 	{
 		var lastLabel = studentLabels.LastOrDefault();
 		short pageNum = lastLabel?.PageNumber ?? 1;
@@ -237,16 +238,39 @@ class EduMockDataGenerator
 			lbl.SiteName = site.SiteName;
 			lbl.TestDateTime = site.TestDate.ToString();
 			lbl.StudentName = $"Walk In";
-			lbl.IseeId = this.GetRandomInt(100000, 999999).ToString();
-			var grade = this.GetRandomInt(2, 4);
+			lbl.IseeId = this.getRandomInt(100000, 999999).ToString();
+			var grade = this.getRandomInt(2, 4);
 			lbl.GradeLevel = $"PRIMARY{grade}";
 			studentLabels.Add(lbl);
 			lblNum++;
 		}
 	}
 
-	int saveTestSiteStudents(LabelDoc site, ICollection<Label> students) {
-		return 0;
+	int saveTestSiteStudents(ICollection<Label> students)
+	{
+		_db.Labels.InsertAllOnSubmit(students);
+		var recordsInserted = _db.GetChangeSet().Inserts.Count();
+		_db.SubmitChanges();
+		return recordsInserted;
+	}
+
+	string slugEncode(string inString)
+	{
+		var sb = new StringBuilder();
+		var invalidChars = Path.GetInvalidFileNameChars();
+		foreach (var inStringChar in inString)
+		{
+			if (inStringChar == ' ' || invalidChars.Contains(inStringChar))
+			{
+				if (sb.ToString().ToCharArray().Last() == '-') continue;
+				sb.Append("-");
+			}
+			else
+			{
+				sb.Append(inStringChar);
+			}
+		}
+		return sb.ToString();
 	}
 
 }
