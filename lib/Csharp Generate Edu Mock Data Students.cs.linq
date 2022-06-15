@@ -162,14 +162,25 @@ class EduMockDataGenerator
 			lDoc.SiteCode = SiteCode;
 			lDoc.SiteName = SiteName;
 			lDoc.SaveFilePath = SaveFilePath;
+			
+			// ordinarily these should be left unset and default values would be handled by SQL 
+			// these must be defined because of LinqPad limitation
+			lDoc.CreateDate = DateTime.Now;
+			lDoc.ExpireDate = DateTime.Now.AddDays(200);
+			lDoc.CreateUser = Environment.UserName;
+			lDoc.CreateHost = Environment.MachineName;
+			
 			lDocs.Add(lDoc);
 		} 
 		return lDocs;
 	}
 
-	int SaveTestSite(LabelDoc testSites)
+	int SaveTestSite(LabelDoc testSite)
 	{
-		return 0;
+		_db.LabelDocs.InsertOnSubmit(testSite);
+		var recordsInserted = _db.GetChangeSet().Inserts.Count();
+		_db.SubmitChanges();
+		return recordsInserted;
 	}
 
 	IList<Label> GetPreIdStudentsForSite(LabelDoc site, int studentCount)
