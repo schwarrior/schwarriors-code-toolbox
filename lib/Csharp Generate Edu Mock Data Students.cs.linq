@@ -24,6 +24,28 @@ void Main()
 
 class EduMockDataGenerator
 {
+
+	const int labelsPerPage = 20;
+
+	const double genericsPerPreId = .25;
+
+	const string labelStockId = "A20L";
+
+	const int daysBeforelabelDocExpires = 200;
+	
+	const int numSampleTestSiteDocs = 3;
+
+	/// 0 = YYMMDD test date folder, 1 = site name, 2 = site code
+	const string saveFileFormatStr = "{0}\\Labels-Primary-{1}-{2}.pdf";
+
+	/// 0 = grade number. Either "2", "3" or "4"
+	const string gradeLevelFormatStr = "PRIMARY{0}";
+
+	const string genericLabelStudentName = "Walk In";
+
+	/// LinqPad is unable to let SQL Server alone to set default values on inserted entities
+	const bool populateSqlColsWithDefaultValues = true;
+
 	public EduMockDataGenerator(UserQuery db)
 	{
 		this._db = db;
@@ -31,12 +53,16 @@ class EduMockDataGenerator
 
 	public void generate()
 	{
+
+		var minSampleStudentsPerDoc = Convert.ToInt32 ( Math.Ceiling ( labelsPerPage / 4.0 ) );
+		var maxSampleStudentsPerDoc = Convert.ToInt32 ( Math.Floor ( labelsPerPage * 2.5 ) );
+
 		Console.WriteLine("Generate Edu Mock Data - Student Exam Registrations");
 
 		checkClassConnections();
 
 		Console.WriteLine("Selecting test sites");
-		var testSites = this.getTestSites(3);
+		var testSites = this.getTestSites(numSampleTestSiteDocs);
 		testSites.Dump();
 
 		foreach (var site in testSites)
@@ -45,7 +71,7 @@ class EduMockDataGenerator
 			var savedSiteCount = this.saveTestSite(site);
 			Console.WriteLine($"Saved {savedSiteCount} site{ (savedSiteCount == 0 || savedSiteCount > 1 ? "s" : string.Empty)} to DB");
 			Console.WriteLine($"Selecting students for test site {site.SiteName}");
-			var rndStudCount = getRandomInt(Convert.ToInt32(Math.Ceiling(labelsPerPage/4D)), Convert.ToInt32(Math.Floor(labelsPerPage*2.5)));
+			var rndStudCount = getRandomInt(minSampleStudentsPerDoc, maxSampleStudentsPerDoc);
 			var appendGenericCount = Convert.ToInt32(Math.Ceiling(rndStudCount*genericsPerPreId));
 			var studLabels = getPreIdStudentsForSite(site, rndStudCount);
 			appendGenericLabelsForSite(site, appendGenericCount, ref studLabels);
@@ -59,12 +85,6 @@ class EduMockDataGenerator
 		Console.WriteLine("Done");
 	}
 
-	const int labelsPerPage = 20;
-	
-	const double genericsPerPreId = .25;
-	
-	const string labelStockId = "A20L";
-	
 	UserQuery _db;
 
 	Random __rnd = null;
@@ -125,9 +145,8 @@ class EduMockDataGenerator
 	void checkClassConnections()
 	{
 		Console.WriteLine("Checking DB Connectivity from class");
-		_db.LabelStocks.Dump();
-		// _db.SampleData.Schools.Skip(200).Take(5).Dump();
-		this._firstNames.Take(5).Dump();
+		_db.LabelStocks.Take(numSampleTestSiteDocs).Dump();
+		this._firstNames.Take(numSampleTestSiteDocs).Dump();
 		Console.WriteLine("Connectivity verified");
 	}
 
@@ -153,8 +172,7 @@ class EduMockDataGenerator
 		{
 			var SiteCode = getRandomInt();
 			var SiteName = s.SchoolName;
-			var saveFilePathPreSlug = $"{dateFolderName}\\Labels-Primary-{SiteName}-{SiteCode}.pdf";
-			var SaveFilePath = slugEncode(saveFilePathPreSlug);
+			var SaveFilePath = string.Format(saveFileFormatStr, dateFolderName, slugEncode(SiteName), SiteCode);
 			
 			var lDoc = new LabelDoc();
 			
@@ -166,11 +184,14 @@ class EduMockDataGenerator
 			
 			// ordinarily these should be left unset and default values would be handled by SQL 
 			// these must be defined because of LinqPad limitation
-			lDoc.CreateDate = DateTime.Now;
-			lDoc.ExpireDate = DateTime.Now.AddDays(200);
-			lDoc.CreateUser = Environment.UserName;
-			lDoc.CreateHost = Environment.MachineName;
-			
+			if (populateSqlColsWithDefaultValues)
+			{
+				lDoc.CreateDate = DateTime.Now;
+				lDoc.ExpireDate = DateTime.Now.AddDays(daysBeforelabelDocExpires);
+				lDoc.CreateUser = Environment.UserName;
+				lDoc.CreateHost = Environment.MachineName;
+			}
+
 			lDocs.Add(lDoc);
 		} 
 		return lDocs;
@@ -210,7 +231,7 @@ class EduMockDataGenerator
 			lbl.StudentName = $"{last}, {first}";
 			lbl.IseeId = this.getRandomInt(100000,999999).ToString();
 			var grade = this.getRandomInt(2,4);
-			lbl.GradeLevel = $"PRIMARY{grade}";
+			lbl.GradeLevel = string.Format(gradeLevelFormatStr, grade);
 			studentLabels.Add(lbl);
 			lblNum++;
 		}
@@ -237,10 +258,10 @@ class EduMockDataGenerator
 			lbl.SiteCode = site.SiteCode.ToString();
 			lbl.SiteName = site.SiteName;
 			lbl.TestDateTime = site.TestDate.ToString();
-			lbl.StudentName = $"Walk In";
+			lbl.StudentName = genericLabelStudentName;
 			lbl.IseeId = this.getRandomInt(100000, 999999).ToString();
 			var grade = this.getRandomInt(2, 4);
-			lbl.GradeLevel = $"PRIMARY{grade}";
+			lbl.GradeLevel = string.Format(gradeLevelFormatStr, grade);
 			studentLabels.Add(lbl);
 			lblNum++;
 		}
