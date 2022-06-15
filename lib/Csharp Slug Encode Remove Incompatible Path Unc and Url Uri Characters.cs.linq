@@ -21,7 +21,7 @@ public static string SlugEncode(string inString)
     var invalidChars = Path.GetInvalidFileNameChars();
     foreach (var inStringChar in inString)
     {
-        if (invalidChars.Contains(inStringChar))
+		if (inStringChar == ' ' || invalidChars.Contains(inStringChar))
         {
 			if(sb.ToString().ToCharArray().Last() == '-') continue;
             sb.Append("-");
