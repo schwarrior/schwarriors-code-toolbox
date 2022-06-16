@@ -39,7 +39,7 @@ class EduMockDataGenerator
 	const string saveFileFormatStr = "{0}\\Labels-Primary-{1}-{2}.pdf";
 
 	/// 0 = grade number. Either "2", "3" or "4"
-	const string gradeLevelFormatStr = "PRIMARY{0}";
+	const string gradeLevelFormatStr = "(PRIMARY{0})";
 
 	const string genericLabelStudentName = "Walk In";
 
