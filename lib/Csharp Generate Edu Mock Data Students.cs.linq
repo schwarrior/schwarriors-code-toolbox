@@ -170,7 +170,7 @@ class EduMockDataGenerator
 		
 		foreach (var s in schools)
 		{
-			var SiteCode = getRandomInt();
+			var SiteCode = getRandomInt().ToString();
 			var SiteName = s.SchoolName;
 			var SaveFilePath = string.Format(saveFileFormatStr, dateFolderName, slugEncode(SiteName), SiteCode);
 			
@@ -209,8 +209,8 @@ class EduMockDataGenerator
 	{
 		var studentLabels = new List<Label>();
 		var lastLabel = studentLabels.LastOrDefault();
-		short pageNum = lastLabel?.PageNumber ?? 1;
-		byte lblNum = lastLabel?.LabelNumber ?? 1;
+		int pageNum = lastLabel?.PageNumber ?? 1;
+		int lblNum = lastLabel?.LabelNumber ?? 1;
 		for(int i = 0; i < studentCount; i++ )
 		{
 			if (lblNum > labelsPerPage)
@@ -241,8 +241,8 @@ class EduMockDataGenerator
 	void appendGenericLabelsForSite(LabelDoc site, int studentCount, ref IList<Label> studentLabels)
 	{
 		var lastLabel = studentLabels.LastOrDefault();
-		short pageNum = lastLabel?.PageNumber ?? 1;
-		byte lblNum = lastLabel?.LabelNumber ?? 0;
+		int pageNum = lastLabel?.PageNumber ?? 1;
+		int lblNum = lastLabel?.LabelNumber ?? 0;
 		lblNum ++;
 		for (int i = 0; i < studentCount; i++)
 		{
