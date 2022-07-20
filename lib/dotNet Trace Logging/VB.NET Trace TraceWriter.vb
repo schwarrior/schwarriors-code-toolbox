@@ -82,6 +82,9 @@ Public Class TraceWriter
         TraceInfo($"Machine: {Environment.MachineName}")
         TraceInfo($"OS Version: {Environment.OSVersion}")
         TraceInfo($"Processor Count: {Environment.ProcessorCount}")
+		Dim dbConnStr = New MyDbContext().Database.Connection.ConnectionString
+        Dim cleanDbConnStr = CleanConnectionString(dbConnStr)
+        TraceInfo($"DB Connection String: {cleanDbConnStr}")
     End Sub
 
     Public Shared Iterator Function GetTextWriterOutputPaths() As IEnumerable(Of String)
@@ -136,6 +139,18 @@ Public Class TraceWriter
         If fullString.Length > characterLimit Then Return fullString.Substring(0, characterLimit - ellipsisText.Length) & ellipsisText
         Return fullString
     End Function
+
+	Public Shared Function CleanConnectionString(ByVal connStr As String) As String
+        Dim passwordSubstitute = "*******"
+        Dim builder = New SqlConnectionStringBuilder(connStr)
+
+        If Not String.IsNullOrWhiteSpace(builder.Password) Then
+            builder.Password = passwordSubstitute
+        End If
+
+        Return builder.ToString()
+    End Function
+
 End Class
 
 Class Program

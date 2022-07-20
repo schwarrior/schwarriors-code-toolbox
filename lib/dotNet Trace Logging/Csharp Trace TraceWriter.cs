@@ -101,6 +101,20 @@ public class TraceWriter
 	    TraceInfo($"Machine: {Environment.MachineName}");
 	    TraceInfo($"OS Version: {Environment.OSVersion}");
 	    TraceInfo($"Processor Count: {Environment.ProcessorCount}");
+		var dbConnStr = new MyDbContext().Database.Connection.ConnectionString;
+		var cleanDbConnStr = CleanConnectionString(dbConnStr);
+		TraceInfo($"DB Connection String: {cleanDbConnStr}");
+	}
+
+	public static string CleanConnectionString(string connStr)
+	{
+		var passwordSubstitute = "*******";
+		var builder = new SqlConnectionStringBuilder(connStr);
+		if (!string.IsNullOrWhiteSpace(builder.Password))
+		{
+			builder.Password = passwordSubstitute;
+		}
+		return builder.ToString();
 	}
 
 	public static IEnumerable<string> GetTextWriterOutputPaths()
