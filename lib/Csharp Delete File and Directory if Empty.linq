@@ -1,17 +1,19 @@
 <Query Kind="Program">
-  <Namespace>System</Namespace>
   <Namespace>System.IO</Namespace>
-  <Namespace>System.Threading</Namespace>
-  <Namespace>System.Threading.Tasks</Namespace>
 </Query>
 
 void Main()
 {
+	var testRoot = @"C:\Dev\Temp";
+	var testFolder = "DelTest";
+	FileSystemGateway.SetupTestFiles(testRoot, testFolder);
+	
 	string[] filesToDelete = 
 	{ 
-		@"C:\temp\DelTest\DirA\File1.txt", 
-		@"C:\Temp\DelTest\DirB\File2.txt", 
-		@"C:\Temp\DelTest\DirC\File3.txt" 
+		$"{testRoot}\\{testFolder}\\DirA\\File1.txt", 
+		$"{testRoot}\\{testFolder}\\DirB\\File2.txt", 
+		$"{testRoot}\\{testFolder}\\DirC\\File3.txt",
+		$"{testRoot}\\{testFolder}\\DirD\\File4.txt",
 	};
 	
 	foreach (var fileToDelete in filesToDelete)
@@ -38,39 +40,51 @@ void Main()
 
 
 //usings copied into linqPad program properties:
-//using System;
 //using System.IO;
-//using System.Threading;
-//using System.Threading.Tasks;
 
 public class FileSystemGateway
 {
 
-	public static string SaveBytesToFile (byte[] fileBytes, string saveFileFullPath)
+	public static void SetupTestFiles(string testRoot, string testFolder)
 	{
-		try
-		{
-			var byteSize = fileBytes.Length;
-			File.WriteAllBytes(saveFileFullPath, fileBytes);
-			return String.Empty;
-		}
-		catch (Exception ex)
-		{
-			return $"Could not save '{saveFileFullPath}'. {ex.Message}";
-		}
+		Directory.Delete($"{testRoot}\\{testFolder}", true);
+		Directory.CreateDirectory($"{testRoot}\\{testFolder}");
+		Directory.CreateDirectory($"{testRoot}\\{testFolder}\\DirA");
+		var f1 = File.CreateText($"{testRoot}\\{testFolder}\\DirA\\File1.txt");
+		f1.Close();
+		Directory.CreateDirectory($"{testRoot}\\{testFolder}\\DirB");
+		var f2 = File.CreateText($"{testRoot}\\{testFolder}\\DirB\\File2.txt");
+		f2.Close();
+		var l = File.CreateText($"{testRoot}\\{testFolder}\\DirB\\DelTest.log");
+		l.Close();
+		Directory.CreateDirectory($"{testRoot}\\{testFolder}\\DirC");
+		Directory.CreateDirectory($"{testRoot}\\{testFolder}\\DirD");
+		var f0 = File.CreateText($"{testRoot}\\{testFolder}\\DirD\\File0.txt");
+		f0.Close();
 	}
 
 	public static string DeleteFileAndParentDirIfEmpty(string fileFullPath, out bool fileDeleted, out bool dirDeleted)
 	{
 		dirDeleted = false;
 		var deleteFileError = DeleteFile(fileFullPath, out fileDeleted);
-		if ( !fileDeleted || !string.IsNullOrEmpty(deleteFileError) ) return deleteFileError;
 		var dirPath = Path.GetDirectoryName(fileFullPath);
-		var dirIsEmpty = DirIsEmptyOrOnlyLogs(dirPath);
-		if (!dirIsEmpty) return String.Empty;
-		var deleteFolderError = DeleteDir(dirPath, out dirDeleted);
-		if (!string.IsNullOrEmpty(deleteFolderError)) return deleteFolderError;
-		return string.Empty;
+		var dirNotFound = !Directory.Exists(dirPath);
+		var dirNotEmpty = !DirExistsAndIsEmptyOrOnlyLogs(dirPath);
+		var deleteFolderError = string.Empty;
+		if (dirNotFound)
+		{
+			deleteFolderError = $"Could not delete folder. Folder not found '{dirPath}'. ";	
+		}
+		else if (!dirNotFound && dirNotEmpty)
+		{
+			deleteFolderError = $"Could not delete folder. Folder has at least one child item that is not a log file '{dirPath}'. ";
+		}
+		else
+		{
+			deleteFolderError = DeleteDir(dirPath, out dirDeleted);
+		}
+		var combinedError = deleteFileError + deleteFolderError;
+		return combinedError;
 	}
 
 	public static string DeleteFile(string filePath, out bool fileDeleted)
@@ -80,7 +94,7 @@ public class FileSystemGateway
 		{
 			if (!File.Exists(filePath))
 			{
-				return $"Could not delete file. File not found '{filePath}'";
+				return $"Could not delete file. File not found '{filePath}'. ";
 			}
 			File.Delete(filePath);
 			fileDeleted = true;
@@ -88,7 +102,7 @@ public class FileSystemGateway
 		}
 		catch (Exception ex)
 		{
-			return $"Could not delete file '{filePath}'. {ex.Message}";
+			return $"Could not delete file '{filePath}'. {ex.Message}. ";
 		}
 	}
 
@@ -99,7 +113,7 @@ public class FileSystemGateway
 		{
 			if (!Directory.Exists(dirPath))
 			{
-				return $"Could not delete folder. Folder not found '{dirPath}'";
+				return $"Could not delete folder. Folder not found '{dirPath}'. ";
 			}
 			Directory.Delete(dirPath, true);
 			dirDeleted = true;
@@ -107,17 +121,18 @@ public class FileSystemGateway
 		}
 		catch (Exception ex)
 		{
-			return $"Could not delete folder '{dirPath}'. {ex.Message}";
+			return $"Could not delete folder '{dirPath}'. {ex.Message}. ";
 		}
 	}
 
-	public static bool DirIsEmptyOrOnlyLogs(string dirPath)
+	public static bool DirExistsAndIsEmptyOrOnlyLogs(string dirPath)
 	{
 		if (!Directory.Exists(dirPath)) return false;
+		var subDirs = Directory.GetDirectories(dirPath);
+		if (subDirs.Length > 0) return false;
 		var directoryFiles = Directory.GetFiles(dirPath);
 		if (directoryFiles.Length == 0) return true;
 		var dirLogFiles = Directory.GetFiles(dirPath, "*.log");
-		if (dirLogFiles.Length == 0) return true;
 		if (directoryFiles.Length == dirLogFiles.Length) return true;
 		return false;
 	}
