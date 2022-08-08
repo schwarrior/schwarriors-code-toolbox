@@ -1,17 +1,27 @@
 <Query Kind="Program" />
 
+
+const int colLength = 2;
+const int rowLength = 10;
+
 void Main()
 {
-	var page = 1;
-	for (var presNum = 1; presNum <= Presidents.Length; presNum ++)
+	var pageIdx = 0;
+	var colIdx = 0;
+	var rowIdx = 0;
+	for (var prezNum = 1; prezNum <= Presidents.Length; prezNum ++)
 	{
 		var sb = new StringBuilder ();
-		var presName = Presidents [presNum - 1];
-		if (presNum > 1) { sb.Append ("Union "); }
-		sb.Append ($"Select {page} as PageNum, {presNum} as PrezNum, '{presName}' as PrezName");
-		if (presNum == Presidents.Length) { sb.Append (";"); }
+		var prezName = Presidents [prezNum - 1];
+		if (prezNum > 1) { sb.Append("Union "); }
+		sb.Append($"Select {pageIdx+1} as [Page], {colIdx+1} as [Col], {rowIdx+1} as [Row], {prezNum} as PrezNum, '{prezName}' as PrezName");
+		if (prezNum == Presidents.Length) { sb.Append ("\r\nOrder By PrezNum;"); }
 		Console.WriteLine (sb.ToString());
-		if (presNum % 10 == 0) { page++; }
+		colIdx++;
+		colIdx = colIdx % colLength;
+		if (colIdx == 0) { rowIdx++; }
+		rowIdx = rowIdx % rowLength;
+		if (colIdx == 0 && rowIdx == 0) { pageIdx++; }
 	}
 }
 
