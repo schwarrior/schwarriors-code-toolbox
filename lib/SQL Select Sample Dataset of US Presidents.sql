@@ -1,46 +1,46 @@
-Select 1 as PresidentNumber, 'George Washington' as PresidentName
-Union Select 2 as PresidentNumber, 'John Adams' as PresidentName
-Union Select 3 as PresidentNumber, 'Thomas Jefferson' as PresidentName
-Union Select 4 as PresidentNumber, 'James Madison' as PresidentName
-Union Select 5 as PresidentNumber, 'James Monroe' as PresidentName
-Union Select 6 as PresidentNumber, 'John Quincy Adams' as PresidentName
-Union Select 7 as PresidentNumber, 'Andrew Jackson' as PresidentName
-Union Select 8 as PresidentNumber, 'Martin Van Buren' as PresidentName
-Union Select 9 as PresidentNumber, 'William Henry Harrison' as PresidentName
-Union Select 10 as PresidentNumber, 'John Tyler' as PresidentName
-Union Select 11 as PresidentNumber, 'James K. Polk' as PresidentName
-Union Select 12 as PresidentNumber, 'Zachary Taylor' as PresidentName
-Union Select 13 as PresidentNumber, 'Millard Fillmore' as PresidentName
-Union Select 14 as PresidentNumber, 'Franklin Pierce' as PresidentName
-Union Select 15 as PresidentNumber, 'James Buchanan' as PresidentName
-Union Select 16 as PresidentNumber, 'Abraham Lincoln' as PresidentName
-Union Select 17 as PresidentNumber, 'Andrew Johnson' as PresidentName
-Union Select 18 as PresidentNumber, 'Ulysses S. Grant' as PresidentName
-Union Select 19 as PresidentNumber, 'Rutherford B. Hayes' as PresidentName
-Union Select 20 as PresidentNumber, 'James A. Garfield' as PresidentName
-Union Select 21 as PresidentNumber, 'Chester A. Arthur' as PresidentName
-Union Select 22 as PresidentNumber, 'Grover Cleveland' as PresidentName
-Union Select 23 as PresidentNumber, 'Benjamin Harrison' as PresidentName
-Union Select 24 as PresidentNumber, 'Grover Cleveland' as PresidentName
-Union Select 25 as PresidentNumber, 'William McKinley' as PresidentName
-Union Select 26 as PresidentNumber, 'Theodore Roosevelt' as PresidentName
-Union Select 27 as PresidentNumber, 'William Howard Taft' as PresidentName
-Union Select 28 as PresidentNumber, 'Woodrow Wilson' as PresidentName
-Union Select 29 as PresidentNumber, 'Warren G. Harding' as PresidentName
-Union Select 30 as PresidentNumber, 'Calvin Coolidge' as PresidentName
-Union Select 31 as PresidentNumber, 'Herbert Hoover' as PresidentName
-Union Select 32 as PresidentNumber, 'Franklin D. Roosevelt' as PresidentName
-Union Select 33 as PresidentNumber, 'Harry S. Truman' as PresidentName
-Union Select 34 as PresidentNumber, 'Dwight D. Eisenhower' as PresidentName
-Union Select 35 as PresidentNumber, 'John F. Kennedy' as PresidentName
-Union Select 36 as PresidentNumber, 'Lyndon B. Johnson' as PresidentName
-Union Select 37 as PresidentNumber, 'Richard Nixon' as PresidentName
-Union Select 38 as PresidentNumber, 'Gerald Ford' as PresidentName
-Union Select 39 as PresidentNumber, 'Jimmy Carter' as PresidentName
-Union Select 40 as PresidentNumber, 'Ronald Reagan' as PresidentName
-Union Select 41 as PresidentNumber, 'George H. W. Bush' as PresidentName
-Union Select 42 as PresidentNumber, 'Bill Clinton' as PresidentName
-Union Select 43 as PresidentNumber, 'George W. Bush' as PresidentName
-Union Select 44 as PresidentNumber, 'Barack Obama' as PresidentName
-Union Select 45 as PresidentNumber, 'Donald J. Trump' as PresidentName
-Union Select 46 as PresidentNumber, 'Joe Biden' as PresidentName;
+Select 1 as PageNum, 1 as PrezNum, 'George Washington' as PrezName
+Union Select 1 as PageNum, 2 as PrezNum, 'John Adams' as PrezName
+Union Select 1 as PageNum, 3 as PrezNum, 'Thomas Jefferson' as PrezName
+Union Select 1 as PageNum, 4 as PrezNum, 'James Madison' as PrezName
+Union Select 1 as PageNum, 5 as PrezNum, 'James Monroe' as PrezName
+Union Select 1 as PageNum, 6 as PrezNum, 'John Quincy Adams' as PrezName
+Union Select 1 as PageNum, 7 as PrezNum, 'Andrew Jackson' as PrezName
+Union Select 1 as PageNum, 8 as PrezNum, 'Martin Van Buren' as PrezName
+Union Select 1 as PageNum, 9 as PrezNum, 'William Henry Harrison' as PrezName
+Union Select 1 as PageNum, 10 as PrezNum, 'John Tyler' as PrezName
+Union Select 2 as PageNum, 11 as PrezNum, 'James K. Polk' as PrezName
+Union Select 2 as PageNum, 12 as PrezNum, 'Zachary Taylor' as PrezName
+Union Select 2 as PageNum, 13 as PrezNum, 'Millard Fillmore' as PrezName
+Union Select 2 as PageNum, 14 as PrezNum, 'Franklin Pierce' as PrezName
+Union Select 2 as PageNum, 15 as PrezNum, 'James Buchanan' as PrezName
+Union Select 2 as PageNum, 16 as PrezNum, 'Abraham Lincoln' as PrezName
+Union Select 2 as PageNum, 17 as PrezNum, 'Andrew Johnson' as PrezName
+Union Select 2 as PageNum, 18 as PrezNum, 'Ulysses S. Grant' as PrezName
+Union Select 2 as PageNum, 19 as PrezNum, 'Rutherford B. Hayes' as PrezName
+Union Select 2 as PageNum, 20 as PrezNum, 'James A. Garfield' as PrezName
+Union Select 3 as PageNum, 21 as PrezNum, 'Chester A. Arthur' as PrezName
+Union Select 3 as PageNum, 22 as PrezNum, 'Grover Cleveland' as PrezName
+Union Select 3 as PageNum, 23 as PrezNum, 'Benjamin Harrison' as PrezName
+Union Select 3 as PageNum, 24 as PrezNum, 'Grover Cleveland' as PrezName
+Union Select 3 as PageNum, 25 as PrezNum, 'William McKinley' as PrezName
+Union Select 3 as PageNum, 26 as PrezNum, 'Theodore Roosevelt' as PrezName
+Union Select 3 as PageNum, 27 as PrezNum, 'William Howard Taft' as PrezName
+Union Select 3 as PageNum, 28 as PrezNum, 'Woodrow Wilson' as PrezName
+Union Select 3 as PageNum, 29 as PrezNum, 'Warren G. Harding' as PrezName
+Union Select 3 as PageNum, 30 as PrezNum, 'Calvin Coolidge' as PrezName
+Union Select 4 as PageNum, 31 as PrezNum, 'Herbert Hoover' as PrezName
+Union Select 4 as PageNum, 32 as PrezNum, 'Franklin D. Roosevelt' as PrezName
+Union Select 4 as PageNum, 33 as PrezNum, 'Harry S. Truman' as PrezName
+Union Select 4 as PageNum, 34 as PrezNum, 'Dwight D. Eisenhower' as PrezName
+Union Select 4 as PageNum, 35 as PrezNum, 'John F. Kennedy' as PrezName
+Union Select 4 as PageNum, 36 as PrezNum, 'Lyndon B. Johnson' as PrezName
+Union Select 4 as PageNum, 37 as PrezNum, 'Richard Nixon' as PrezName
+Union Select 4 as PageNum, 38 as PrezNum, 'Gerald Ford' as PrezName
+Union Select 4 as PageNum, 39 as PrezNum, 'Jimmy Carter' as PrezName
+Union Select 4 as PageNum, 40 as PrezNum, 'Ronald Reagan' as PrezName
+Union Select 5 as PageNum, 41 as PrezNum, 'George H. W. Bush' as PrezName
+Union Select 5 as PageNum, 42 as PrezNum, 'Bill Clinton' as PrezName
+Union Select 5 as PageNum, 43 as PrezNum, 'George W. Bush' as PrezName
+Union Select 5 as PageNum, 44 as PrezNum, 'Barack Obama' as PrezName
+Union Select 5 as PageNum, 45 as PrezNum, 'Donald J. Trump' as PrezName
+Union Select 5 as PageNum, 46 as PrezNum, 'Joe Biden' as PrezName;

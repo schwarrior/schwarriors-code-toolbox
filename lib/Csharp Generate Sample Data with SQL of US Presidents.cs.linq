@@ -2,10 +2,16 @@
 
 void Main()
 {
+	var page = 1;
 	for (var presNum = 1; presNum <= Presidents.Length; presNum ++)
 	{
-			var presName = Presidents[presNum - 1];
-			Console.WriteLine($"{(presNum > 1 ? "Union " : string.Empty)}Select {presNum} as PresidentNumber, '{presName}' as PresidentName");
+		var sb = new StringBuilder ();
+		var presName = Presidents [presNum - 1];
+		if (presNum > 1) { sb.Append ("Union "); }
+		sb.Append ($"Select {page} as PageNum, {presNum} as PrezNum, '{presName}' as PrezName");
+		if (presNum == Presidents.Length) { sb.Append (";"); }
+		Console.WriteLine (sb.ToString());
+		if (presNum % 10 == 0) { page++; }
 	}
 }
 
