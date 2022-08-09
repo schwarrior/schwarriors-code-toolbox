@@ -2,6 +2,7 @@
   <Namespace>System.IO</Namespace>
 </Query>
 
+
 void Main()
 {
 	var testRoot = @"C:\Dev\Temp";
@@ -14,6 +15,7 @@ void Main()
 		$"{testRoot}\\{testFolder}\\DirB\\File2.txt", 
 		$"{testRoot}\\{testFolder}\\DirC\\File3.txt",
 		$"{testRoot}\\{testFolder}\\DirD\\File4.txt",
+		$"{testRoot}\\{testFolder}\\DirE\\File5.txt",
 	};
 	
 	foreach (var fileToDelete in filesToDelete)
@@ -61,6 +63,12 @@ public class FileSystemGateway
 		Directory.CreateDirectory($"{testRoot}\\{testFolder}\\DirD");
 		var f0 = File.CreateText($"{testRoot}\\{testFolder}\\DirD\\File0.txt");
 		f0.Close();
+
+		Directory.CreateDirectory($"{testRoot}\\{testFolder}\\DirE");
+		var f5 = File.CreateText($"{testRoot}\\{testFolder}\\DirE\\File5.txt");
+		f5.Close();
+		var f6 = File.CreateText($"{testRoot}\\{testFolder}\\DirE\\File6.txt");
+		f6.Close();
 	}
 
 	public static string DeleteFileAndParentDirIfEmpty(string fileFullPath, out bool fileDeleted, out bool dirDeleted)
