@@ -1,31 +1,37 @@
 <Query Kind="Program" />
 
-
-const int colLength = 2;
-const int rowLength = 10;
-
 void Main()
 {
-	var pageIdx = 0;
-	var colIdx = 0;
-	var rowIdx = 0;
-	for (var prezNum = 1; prezNum <= Presidents.Length; prezNum ++)
+	GenerateSqlForPresidentLabels();
+}
+
+void GenerateSqlForPresidentLabels()
+{
+	var pageOrd = 1;
+	var colOrd = 1;
+	var rowOrd = 1;
+	for (var prezOrd = 1; prezOrd <= Presidents.Length; prezOrd++)
 	{
-		var sb = new StringBuilder ();
-		var prezName = Presidents [prezNum - 1];
-		if (prezNum > 1) { sb.Append("Union "); }
-		sb.Append($"Select {pageIdx+1} as [Page], {colIdx+1} as [Col], {rowIdx+1} as [Row], {prezNum} as PrezNum, '{prezName}' as PrezName");
-		if (prezNum == Presidents.Length) { sb.Append ("\r\nOrder By PrezNum;"); }
-		Console.WriteLine (sb.ToString());
-		colIdx++;
-		colIdx = colIdx % colLength;
-		if (colIdx == 0) { rowIdx++; }
-		rowIdx = rowIdx % rowLength;
-		if (colIdx == 0 && rowIdx == 0) { pageIdx++; }
+		var sb = new StringBuilder();
+		var prezName = Presidents[prezOrd - 1];
+		if (prezOrd > 1) { sb.Append("Union "); }
+		sb.Append($"Select {pageOrd} as [Page], {colOrd} as [Col], {rowOrd} as [Row], {prezOrd} as PrezNum, '{prezName}' as PrezName");
+		if (prezOrd == Presidents.Length) { sb.Append("\r\nOrder By PrezNum;\r\n"); }
+		Console.WriteLine(sb.ToString());
+		//colOrd = prezOrd % colLength + 1;
+		//rowOrd = prezOrd % rowLength + 1;
+		//pageOrd = prezOrd / (colLength * rowLength) + 1;
+		colOrd++;
+		colOrd = (colOrd - 1) % colLength + 1;
+		if (colOrd == 1) { rowOrd++; }
+		rowOrd = (rowOrd - 1) % rowLength + 1;
+		if (colOrd == 1 && rowOrd == 1) { pageOrd++; }
 	}
 }
 
-// Define other methods and classes here
+const int colLength = 2;
+const int rowLength = 7;
+
 string[] Presidents = {
 		"George Washington", "John Adams", "Thomas Jefferson", "James Madison", "James Monroe", "John Quincy Adams", "Andrew Jackson", "Martin Van Buren", "William Henry Harrison", "John Tyler", "James K. Polk", "Zachary Taylor", "Millard Fillmore", "Franklin Pierce", "James Buchanan", "Abraham Lincoln", "Andrew Johnson", "Ulysses S. Grant", "Rutherford B. Hayes", "James A. Garfield", "Chester A. Arthur", "Grover Cleveland", "Benjamin Harrison", "Grover Cleveland", "William McKinley", "Theodore Roosevelt", "William Howard Taft", "Woodrow Wilson", "Warren G. Harding", "Calvin Coolidge", "Herbert Hoover", "Franklin D. Roosevelt", "Harry S. Truman", "Dwight D. Eisenhower", "John F. Kennedy", "Lyndon B. Johnson", "Richard Nixon", "Gerald Ford", "Jimmy Carter", "Ronald Reagan", "George H. W. Bush", "Bill Clinton", "George W. Bush", "Barack Obama", "Donald J. Trump", "Joe Biden"
 	};
