@@ -8,24 +8,23 @@ void Main()
 void GenerateSqlForPresidentLabels()
 {
 	var pageOrd = 1;
+	var pageLabelOrd = 1;
 	var colOrd = 1;
 	var rowOrd = 1;
 	for (var prezOrd = 1; prezOrd <= Presidents.Length; prezOrd++)
-	{
-		var sb = new StringBuilder();
+	{	
+		pageOrd = (int)Math.Ceiling((double)prezOrd / (double)(colLength * rowLength));
+		pageLabelOrd = (prezOrd - 1) % (colLength * rowLength) + 1;
+		colOrd = (pageLabelOrd - 1) % colLength + 1;
+		rowOrd = (int)Math.Ceiling((double)pageLabelOrd / (double)colLength);
+		
 		var prezName = Presidents[prezOrd - 1];
+		var sb = new StringBuilder();
 		if (prezOrd > 1) { sb.Append("Union "); }
-		sb.Append($"Select {pageOrd} as [Page], {colOrd} as [Col], {rowOrd} as [Row], {prezOrd} as PrezNum, '{prezName}' as PrezName");
+		sb.Append($"Select {pageOrd} as [Page], {pageLabelOrd} as [PageItem], {colOrd} as [Col], ");
+		sb.Append($"{rowOrd} as [Row], {prezOrd} as PrezNum, '{prezName}' as PrezName");
 		if (prezOrd == Presidents.Length) { sb.Append("\r\nOrder By PrezNum;\r\n"); }
 		Console.WriteLine(sb.ToString());
-		//colOrd = prezOrd % colLength + 1;
-		//rowOrd = prezOrd % rowLength + 1;
-		//pageOrd = prezOrd / (colLength * rowLength) + 1;
-		colOrd++;
-		colOrd = (colOrd - 1) % colLength + 1;
-		if (colOrd == 1) { rowOrd++; }
-		rowOrd = (rowOrd - 1) % rowLength + 1;
-		if (colOrd == 1 && rowOrd == 1) { pageOrd++; }
 	}
 }
 
