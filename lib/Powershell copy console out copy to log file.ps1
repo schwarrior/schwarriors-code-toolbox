@@ -1,6 +1,6 @@
 
 $process = "node -e 'console.log(123)'"
-$processForFileName = $process -replace "[\W]", "-"
+$processForFileName = $process -replace "\s", "-"
 $processForFileName = $processForFileName -replace "-+", "-"
 $RunDate = (Get-Date).ToString("yyyyMMddHHmmss")
 $RootPath = Resolve-Path -Path '.\'
