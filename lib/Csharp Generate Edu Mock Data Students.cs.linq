@@ -248,15 +248,16 @@ class EduMockDataGenerator
 		return recordsInserted;
 	}
 
-	string slugEncode(string inString)
+	public static string SlugEncode(string inString)
 	{
 		var sb = new StringBuilder();
 		var invalidChars = Path.GetInvalidFileNameChars();
+		var slugOutChars = invalidChars + ":. ";
 		foreach (var inStringChar in inString)
 		{
-			if (inStringChar == ' ' || invalidChars.Contains(inStringChar))
+			if (slugOutChars.Contains(inStringChar))
 			{
-				if (sb.ToString().ToCharArray().Last() == '-') continue;
+				if(sb.ToString().ToCharArray().Last() == '-') continue;
 				sb.Append("-");
 			}
 			else

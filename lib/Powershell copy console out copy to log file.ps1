@@ -1,9 +1,18 @@
+Function Get-Slug-Encoding {
+    param ($InString)
+
+    $InvalidPathChars = [IO.Path]::GetInvalidFileNameChars() -join ""
+    $SlugOutChars = $InvalidPathChars + ":. "
+    $RegExp = "[{0}]" -f [RegEx]::Escape($SlugOutChars)
+    $OutString = $InString -replace $RegExp
+    $OutString = $OutString -replace "-+", "-"
+    return $OutString
+}
 
 $process = "node -e 'console.log(123)'"
-$processForFileName = $process -replace "\s", "-"
-$processForFileName = $processForFileName -replace "-+", "-"
+$processForFileName = Get-Slug-Encoding $process
 $RunDate = (Get-Date).ToString("yyyyMMddHHmmss")
-$RootPath = Resolve-Path -Path '.\'
+$RootPath = Resolve-Path -Path ".\"
 $LogFile = "$($processForFileName)-$($RunDate).log"
 $LogPath = Join-Path -Path $RootPath -ChildPath $LogFile
 

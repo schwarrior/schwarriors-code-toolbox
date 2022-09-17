@@ -1,1 +1,1 @@
-Get-FileHash <filepath> -Algorithm MD5
+Get-FileHash "C:\Temp\SampleFile.zip" -Algorithm MD5
