@@ -31,7 +31,18 @@ ls -a
  
 # Show Hidden Files with Batch File 
 
-First setup per (Using Terminal Aliases method) [http://ianlunn.co.uk/articles/quickly-showhide-hidden-files-mac-os-x-mavericks]
+Add the following to ~/.zshrc
+
+```
+alias showFiles='defaults write com.apple.finder AppleShowAllFiles YES; killall Finder /System/Library/CoreServices/Finder.app'
+alias hideFiles='defaults write com.apple.finder AppleShowAllFiles NO; killall Finder /System/Library/CoreServices/Finder.app'
+```
+
+Save the file anc exit text editor. New aliases will take effect after running terminal command:
+
+```
+source .zshrc
+```
 
 Then invoke from terminal 
 
@@ -39,3 +50,4 @@ Then invoke from terminal
 showFiles 
 hideFiles 
 ```
+
