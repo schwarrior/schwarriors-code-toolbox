@@ -3,19 +3,19 @@
     "configurations": [
         {
             "name": "JS Launch Current File",
-			"type": "pwa-node",
+			"type": "node",
             "request": "launch",
             "program": "${file}"
         },
-        {
-			"name": "PS Launch Current File",
+		{
+			"name": "PowerShell Launch Current File",
 			"type": "PowerShell",
 			"request": "launch",
 			"script": "${file}",
-			"cwd": "${file}"
+			"cwd": "${cwd}"
 		},
         {
-            "type": "pwa-node",
+            "type": "node",
             "request": "launch",
             "name": "Move from Root to Library",
             "skipFiles": [
@@ -24,7 +24,7 @@
             "program": "${workspaceFolder}\\util\\js-util\\move-from-root-to-library.js"
         },
         {
-            "type": "pwa-node",
+            "type": "node",
             "request": "launch",
             "name": "Rename lib .linq files to .cs.linq",
             "skipFiles": [
@@ -33,7 +33,7 @@
             "program": "${workspaceFolder}\\util\\js-util\\rename-linq-to-cslinq.js"
         },
         {
-            "type": "pwa-node",
+            "type": "node",
             "request": "launch",
             "name": "Rename git file cmd gen",
             "skipFiles": [

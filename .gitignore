@@ -1,8 +1,12 @@
 # Node packages
-node_modules
+node_modules/
 
 # Beyond Compare backup files
 *.~*
 
-# temporary batch files etc
-temp
+# temp folders
+[Rr]esources-[Tt]emp/
+[Tt]emp/
+
+# temp files
+*.log
