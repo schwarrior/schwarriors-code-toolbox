@@ -61,12 +61,11 @@ public class TraceWriter
 	    Write(TraceEventType.Error, message);
 	}
 
-	public static void TraceError(string format, params object[] args)
+	public static void TraceError(string message, Exception ex)
 	{
-	    var info = string.Format(format, args);
-	    Write(TraceEventType.Error, info);
+		var comboMsg = $"{message}. {ex}";
+	    Write(TraceEventType.Error, comboMsg);
 	}
-
 
 	private static void Write(TraceEventType type, string message)
 	{
@@ -186,7 +185,7 @@ class Program
 	    TraceWriter.TraceWarning("Test Trace Warning");
 	    TraceWriter.TraceWarning("Test Trace Warning with arg: {0}", "hello world");
 	    TraceWriter.TraceError("Test Trace Error");
-	    TraceWriter.TraceError("Test Trace Error with arg: {0}", "hello world");
+	    TraceWriter.TraceError("Test Trace Error with message and ex obj", new Exception("Test Exception"));
 	    TraceWriter.TraceError(new Exception("Test Exception"));
 	    Console.ReadLine();
 	}

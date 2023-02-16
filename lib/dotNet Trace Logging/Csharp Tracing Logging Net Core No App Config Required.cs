@@ -84,5 +84,13 @@ namespace SampleProgram.Library
             Trace.Flush();
         }
 
+		public static void LogError(string message, Exception ex)
+		{
+			Initialize();
+			var comboMsg = $"{message}. {ex}";
+			Trace.TraceError($"{DateTime.Now.ToString("o")} - {comboMsg}");
+			Trace.Flush();
+		}
+
     }
 }

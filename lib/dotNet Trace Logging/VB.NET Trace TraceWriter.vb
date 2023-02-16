@@ -46,9 +46,9 @@ Public Class TraceWriter
         Write(TraceEventType.[Error], message)
     End Sub
 
-    Public Shared Sub TraceError(ByVal format As String, ParamArray args As Object())
-        Dim info = String.Format(format, args)
-        Write(TraceEventType.[Error], info)
+    Public Shared Sub TraceError(ByVal message As String, ByVal ex As Exception)
+		Dim comboMsg = $"{message}. {ex}"
+        Write(TraceEventType.[Error], comboMsg)
     End Sub
 
     Private Shared Sub Write(ByVal type As TraceEventType, ByVal message As String)
@@ -163,7 +163,7 @@ Class Program
         TraceWriter.TraceWarning("Test Trace Warning")
         TraceWriter.TraceWarning("Test Trace Warning with arg: {0}", "hello world")
         TraceWriter.TraceError("Test Trace Error")
-        TraceWriter.TraceError("Test Trace Error with arg: {0}", "hello world")
+        TraceWriter.TraceError("Test Trace Error with message and ex obj", New Exception("Test Exception"))
         TraceWriter.TraceError(New Exception("Test Exception"))
         Console.ReadLine()
     End Sub
