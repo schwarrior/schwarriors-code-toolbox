@@ -144,7 +144,7 @@ public class TraceWriter
 	    var listIndex = 0;
 	    for (listIndex = 0; listIndex < list.Count() && listIndex < itemDisplayLimit; listIndex++)
 	    {
-		var itemString = list[listIndex].ToString();
+		var itemString = list[listIndex]!.ToString();
 		if (!string.IsNullOrEmpty(itemString))
 		{
 		    if (sb.Length > 0) { sb.Append(", "); }
