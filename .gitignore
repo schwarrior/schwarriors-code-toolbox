@@ -15,3 +15,6 @@ node_modules/
 
 # temp files
 *.log
+
+# vscode config on any level except root
+*/**/.vscode/
