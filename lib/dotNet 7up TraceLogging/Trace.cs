@@ -117,23 +117,24 @@ public class Trace
             var configBuilder = new ConfigurationBuilder().
             AddJsonFile("appsettings.json").Build();
             var configSection = configBuilder.GetSection("AppSettings");
-            var dbConnStr = configSection["connectionString"] ?? "empty";
+            var dbConnStr = configSection["connectionString"] ?? String.Empty;
             var cleanDbConnStr = CleanConnectionString(dbConnStr);
             LogInfo($"DB Connection String: {cleanDbConnStr}");
 
-            var query = configSection["query"] ?? "empty";
+            var query = configSection["query"] ?? String.Empty;
             LogInfo($"Image Queue Query: {query}");
 
-            var logFolder = configSection["logFolder"] ?? "empty";
+            var logFolder = configSection["logFolder"] ?? String.Empty;
             LogInfo($"Log Folder (Depricated): {logFolder}");
 
         }
 
         public static string CleanConnectionString(string connStr)
         {
+			if ( String.IsNullOrWhiteSpace(connStr) ) { return String.Empty; } 
             var passwordSubstitute = "*******";
             var builder = new SqlConnectionStringBuilder(connStr);
-            if (!string.IsNullOrWhiteSpace(builder.Password))
+            if ( !string.IsNullOrWhiteSpace(builder.Password) )
             {
                 builder.Password = passwordSubstitute;
             }

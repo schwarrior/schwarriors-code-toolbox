@@ -3,6 +3,7 @@
 	public static int Main()
 	{
 		Trace.LogInfo("LogLab7 Starting");
+		Trace.TraceEnvironmentInfo();
 
 		Trace.LogDebug("Mock Debug Info");
 		Trace.LogWarning("Mock Warning");
