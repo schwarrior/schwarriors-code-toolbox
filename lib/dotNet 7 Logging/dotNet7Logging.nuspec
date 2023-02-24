@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ISEE-Image-to-PDF-Converter</id>
+    <title>ISEE Image to PDF Converter</title>
+    <version>1.6.0.0</version>
+    <authors>Measurement Inc.</authors>
+    <description>This console app converts raw scanned student essay images (in .tif format) to PDF.</description>
+    <projectUrl>https://dev.azure.com/measinc/ISEE%20Image%20to%20PDF%20Converter</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <releaseNotes>Image Converter .Net7.0 console app. Scheduled for daily run on deployed hosts via Windoes Task Scheduler</releaseNotes>
+    <copyright>Copyright 2023</copyright>
+    <tags>OctopusDeploy</tags>
+  </metadata>
+  <files>
+    <file src="bin\Production\net7.0\publish\**\*.*" />
+  </files>
+</package>
