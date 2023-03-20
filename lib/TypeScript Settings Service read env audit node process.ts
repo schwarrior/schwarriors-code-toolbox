@@ -1,12 +1,24 @@
-import * as env from 'dotenv';
 import * as os from 'node:os';
-import * as fs from 'node:fs'
+import * as fs from 'node:fs';
+import * as env from 'dotenv';
 
-export class SettingService {
+// Remark: none of the above references are compatable with a web app / angular
 
-	expectedEnvKeys = ['ENVIRONMENT','LOG','','AzureTableAcctName','AzureTableAcctKey'];
+export interface Settings {
+	ENVIRONMENT: string | null,
+	LOG: string | null,
+	AzureTableAcctName: string | null,
+	AzureTableAcctKey: string | null
+}
 
-	settings = new Object();
+export class SettingsService {
+
+	settings: Settings = {
+		ENVIRONMENT: null,
+		LOG: null,
+		AzureTableAcctName: null,
+		AzureTableAcctKey: null
+	};
 
 	constructor() {
 		env.config();
@@ -16,17 +28,17 @@ export class SettingService {
 				console.warn(`No value found for expected .env key ${expectedKey}`);
 				continue;
 			} 
-			this.settings[expectedKey] = process.env[expectedKey];
+			(this.settings as any)[expectedKey] = process.env[expectedKey];
 		}
 	}
 
-	getSqlDbConfig() {
+	getSqlDbConfig() : object {
 		throw new Error('SQL DB config not set up for this project');
 		const dbConfig = {
-			user: this.settings['dbUser'],
-			password: this.settings['dbPassword'],
-			server: this.settings['dbServer'],
-			database: this.settings['dbDatabase'],
+			user: (this.settings as any)['dbUser'],
+			password: (this.settings as any)['dbPassword'],
+			server: (this.settings as any)['dbServer'],
+			database: (this.settings as any)['dbDatabase'],
 			connectionTimeout: 30000, //30 seconds
 			requestTimeout: 1800000, //30 minutes
 			options: {enableArithAbort: true, trustServerCertificate: true}
@@ -34,15 +46,15 @@ export class SettingService {
 		return dbConfig;
 	}
 	
-	getAzureTableStoreConnString = () => {
+	getAzureTableStoreConnString = () : string => {
 		throw new Error('Azure Table Store not set up for this project');
-		const acctName = this.settings['AzureTableStoreAcctName'];
-		const acctKey = this.settings['AzureTableStoreAcctKey'];
+		const acctName = (this.settings as any)['AzureTableStoreAcctName'];
+		const acctKey = (this.settings as any)['AzureTableStoreAcctKey'];
 		const connStr = `DefaultEndpointsProtocol=https;AccountName=${acctName};AccountKey=${acctKey};EndpointSuffix=core.windows.net`;
 		return connStr;
 	}
 	
-	getProgramAudit = (withConsoleLog = true) => {
+	getProgramAudit = (withConsoleLog = true) : string[] => {
 		const auditLines = this.getGeneralNodeAppAuditLines();
 		const appSpecificAuditLines = this.getAppSpecificAuditLines();
 		auditLines.push(...appSpecificAuditLines);
@@ -53,8 +65,8 @@ export class SettingService {
 		return auditLines;
 	}
 	
-	getGeneralNodeAppAuditLines = () => {
-		const auditLines = [];
+	getGeneralNodeAppAuditLines = () : string[] => {
+		const auditLines = new Array<string>();
 		const startCmd = this.arrayToString(process.argv);
 		auditLines.push(`Running: ${startCmd}`);
 		const host = os.hostname();
@@ -78,24 +90,24 @@ export class SettingService {
 		return auditLines;
 	}
 
-	getAppSpecificAuditLines = () => {
-		const auditLines = [];
-		for(const expectedKey of this.expectedEnvKeys) {
+	getAppSpecificAuditLines = () : string[] => {
+		const auditLines = new Array<string>();
+		for(const expectedKey in this.settings) {
 			auditLines.push(this.getEnvSettingAuditLine(expectedKey));
 		}
 		return auditLines;
 	}
 
-	getEnvSettingAuditLine = (settingName) => {
-		const value = this.settings[settingName];
+	getEnvSettingAuditLine = (settingName: string) : string => {
+		const value = (this.settings as any)[settingName];
 		if (!value) {
 			return `.env ${settingName} value not found`;
 		}
 		return `.env ${settingName}: ${value}`;
 	} 
 
-	stringToArray = (inStr) => {
-		const outAr = []
+	stringToArray = (inStr: string) : string[] => {
+		const outAr = new Array<string>();
 		if (inStr && inStr.length > 0) {
 			const inStrParts = inStr.split(',');
 			for(let strPart of inStrParts) {
@@ -105,7 +117,7 @@ export class SettingService {
 		return outAr
 	}
 	
-	arrayToString = (inArray, delimitter = ' ') => {
+	arrayToString = (inArray: any[], delimitter = ' '): string => {
 		let s = '';
 		if (!Array.isArray(inArray)) {
 			return inArray??s.toString();
