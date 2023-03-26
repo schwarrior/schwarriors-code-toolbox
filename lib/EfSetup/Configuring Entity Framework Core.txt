@@ -1,31 +1,37 @@
-Configuring EF Core within an ASP.NET Core 1.1 project
+Configuring EF Core within an ASP.NET Core project
+==================================================
 
-To do: convert to Markdown.
 
-Add Nuget packages for ef core and ef core.sql server
+# Instructions
 
-Add database conn string to appsettings.json
-	
-	"ConnectionStrings": {
-	    "DefaultConnection": "Data Source=.;Initial Catalog=MyDatabase;Integrated Security=True"
-	  },
+Add or update the database conn string to appsettings.json
 
-Implement a configuration provider class to pull the setting
+```
+"ConnectionStrings": {
+	"DefaultConnection": "Data Source=.;Initial Catalog=MyDatabase;Integrated Security=True"
+},
+```
 
-	"Csharp AppSettings.json reader Configuration Provider ASP.NET Core.cs"
+Create DBContext class
 
-Create dbcontext class
+```
+public class MyDbContext : DbContext
+    {
+	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+	{
+	    var connectionString = ConfigurationProvider.GetDatabaseConnectionString("DefaultConnection");
+	    optionsBuilder.UseSqlServer(connectionString);
+	}
 
-	public class MyDbContext : DbContext
-	    {
-	        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-	        {
-	            var connectionString = ConfigurationProvider.GetDatabaseConnectionString("DefaultConnection");
-	            optionsBuilder.UseSqlServer(connectionString);
-	        }
-	
-	        public DbSet<Template> Templates { get; set; }
-	    }
+	public DbSet<Template> Templates { get; set; }
+    }
+```
+
+If the project won't compile you may need some additional NuGet packages.
+- "microsoft.entityframeworkcore.tools"
+- "
+
+You might need to add nuget packages to your project to bring in ef core and ef core.sql packages. 
 
 Add this to .csproj
 
@@ -37,19 +43,45 @@ Add this to .csproj
 
 Unsure if this required, but you might need to create the database first.
 
-Follow these directions to enable command line ef tools
+Install or update the local Entity FRamework command line tools, which are extensions of dotnet.exe
 
-	https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet
+enable ef cli tools:
+```
+dotnet tool install --global dotnet-ef
+```
+or
+```
+dotnet tool install --global dotnet-ef
+```
 
-From Powershell CLI window in context of .csproj location.
+Verify install:
+```
+dotnet ef
+```
 
-	(there is no enable migrations, the first mig add will do it.)
+Add or Update the current VS project's NuGet packages. 
+```
+dotnet add package Microsoft.EntityFrameworkCore.Design
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+```
 
-	dotnet ef dbcontext info
-	
-	dotnet ef migrations add initial
-	
-	dotnet ef database update
+
+[More info on entity framework through the  dotnet cli] (https://learn.microsoft.com/en-us/ef/core/cli/dotnet#installing-the-tools)
+
+From Powershell CLI window in context of .csproj location. 
+
+```
+# verify dbcontext is visible to EF
+dotnet ef dbcontext info
+
+# add a first migration,
+dotnet ef migrations add initial
+
+# after specifying a little beit of schema, send it to the development SQL Server.
+# If the DB doesn't exist, it will be created
+dotnet ef database update
+```
 
 
 
