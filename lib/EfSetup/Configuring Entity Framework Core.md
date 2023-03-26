@@ -8,7 +8,7 @@ Add or update the database conn string to appsettings.json
 
 ```
 "ConnectionStrings": {
-	"DefaultConnection": "Data Source=.;Initial Catalog=MyDatabase;Integrated Security=True"
+	"DefaultConnection": "Data Source=.;Initial Catalog=MyDatabase;Integrated Security=True;TrustServerCertificate=True;MultipleActiveResultSets=true"
 },
 ```
 
