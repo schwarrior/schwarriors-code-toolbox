@@ -12,51 +12,42 @@ Add or update the database conn string to appsettings.json
 },
 ```
 
-Create DBContext class
+Create a DBContext class
 
 ```
 public class MyDbContext : DbContext
-    {
+{
 	protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 	{
-	    var connectionString = ConfigurationProvider.GetDatabaseConnectionString("DefaultConnection");
-	    optionsBuilder.UseSqlServer(connectionString);
+		var connectionString = ConfigurationProvider.GetDatabaseConnectionString("DefaultConnection");
+		optionsBuilder.UseSqlServer(connectionString);
 	}
 
 	public DbSet<Template> Templates { get; set; }
-    }
+}
 ```
 
-If the project won't compile you may need some additional NuGet packages.
-- "microsoft.entityframeworkcore.tools"
-- "
+If the project won't compile you may need some additional NuGet packages, more detail below.
 
-You might need to add nuget packages to your project to bring in ef core and ef core.sql packages. 
+You'll also need to to install the ef extensions for dotnet.exe
 
-Add this to .csproj
+```
+# Verify this dislays ef command help, not an error.
+dotnet ef
+```
 
-	  <ItemGroup>
-	      <Content Update="appsettings.json">
-	        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	      </Content>
-	   </ItemGroup>
+You can add the EF CLI extensions with this command
+```
+nugent add package microsoft.entityframeworkcore.tools"
+```
 
-Unsure if this required, but you might need to create the database first.
-
-Install or update the local Entity FRamework command line tools, which are extensions of dotnet.exe
-
-enable ef cli tools:
+then enable ef cli tools:
 ```
 dotnet tool install --global dotnet-ef
 ```
 or
 ```
-dotnet tool install --global dotnet-ef
-```
-
-Verify install:
-```
-dotnet ef
+dotnet tool update --global dotnet-ef
 ```
 
 Add or Update the current VS project's NuGet packages. 
@@ -66,27 +57,30 @@ dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 ```
 
-
 [More info on entity framework through the  dotnet cli] (https://learn.microsoft.com/en-us/ef/core/cli/dotnet#installing-the-tools)
 
-From Powershell CLI window in context of .csproj location. 
 
+
+Verify dbcontext is visible to EF
 ```
-# verify dbcontext is visible to EF
 dotnet ef dbcontext info
+```
 
-# add a first migration,
+Add a first migration
+```
 dotnet ef migrations add initial
+```
 
-# after specifying a little beit of schema, send it to the development SQL Server.
-# If the DB doesn't exist, it will be created
+After specifying a little bit of schema, send it to the development SQL Server.
+If the DB doesn't exist, it will be created.
+```
 dotnet ef database update
 ```
 
-
+# References
 
 dotnet ef cli ref
-https://docs.microsoft.com/en-us/ef/core/miscellaneous/cli/dotnet
+https://learn.microsoft.com/en-us/ef/core/cli/dotnet
 
 general ref
-https://docs.microsoft.com/en-us/ef/core/
+https://learn.microsoft.com/en-us/ef/core/
