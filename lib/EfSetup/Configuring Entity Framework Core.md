@@ -29,19 +29,18 @@ public class MyDbContext : DbContext
 
 If the project won't compile you may need some additional NuGet packages, more detail below.
 
-You'll also need to to install the ef extensions for dotnet.exe
-
+You'll also need to install the ef extensions for dotnet.exe.
 ```
 # Verify this dislays ef command help, not an error.
 dotnet ef
 ```
 
-You can add the EF CLI extensions with this command
+You can add the EF CLI extensions with this command.
 ```
 nugent add package microsoft.entityframeworkcore.tools"
 ```
 
-then enable ef cli tools:
+Then enable ef cli tools.
 ```
 dotnet tool install --global dotnet-ef
 ```
@@ -57,16 +56,12 @@ dotnet add package Microsoft.EntityFrameworkCore.SqlServer
 dotnet add package Microsoft.EntityFrameworkCore.Tools
 ```
 
-[More info on entity framework through the  dotnet cli] (https://learn.microsoft.com/en-us/ef/core/cli/dotnet#installing-the-tools)
-
-
-
-Verify dbcontext is visible to EF
+Verify the DbContext class is visible to EF.
 ```
 dotnet ef dbcontext info
 ```
 
-Add a first migration
+Add a first migration.
 ```
 dotnet ef migrations add initial
 ```
@@ -79,8 +74,8 @@ dotnet ef database update
 
 # References
 
-dotnet ef cli ref
+Dotnet.exe ef cli ref
 https://learn.microsoft.com/en-us/ef/core/cli/dotnet
 
-general ref
+General ref
 https://learn.microsoft.com/en-us/ef/core/
