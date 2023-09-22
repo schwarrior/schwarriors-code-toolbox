@@ -2,35 +2,52 @@
 
 void Main()
 {
-	var inStrs = new List<string> 
+	var samples = new List<string> 
 	{
-		"http://blogs.msdn.microsoft.com/patrickdanino/2008/07/23/user-settings-in-wpf",
-		@"C:\Users\Public\Document\FileA.txt"
+		"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/indexed_collections#array_methods",
+		"---hay stack---",
+		@"C:\Users\Public\Document\FileA.txt",
+		"¿It’s a T–Bone?"
 	};
-	inStrs.ForEach(inStr => 
+	samples.ForEach(sample => 
 	{
-		SlugEncode(inStr).Dump();
-	}
-	);
+		Console.WriteLine(sample);
+		Console.WriteLine(SlugEncode(sample, lowerCase: true));
+		Console.WriteLine();
+	});
 }
 
-// Define other methods and classes here
-public static string SlugEncode(string inString)
+/// <summary>
+/// Replaces every character that is not strictly alphanumeric with a dash
+/// </summary>
+public static string SlugEncode(
+	string inString,
+	bool lowerCase = false,
+	bool dedupeSlugs = true,
+	bool trimSlugs = true,
+	char slugChar = '-',
+	string allowedChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+)
 {
-    var sb = new StringBuilder();
-    var invalidChars = Path.GetInvalidFileNameChars();
-	var slugOutChars = invalidChars + ":. ";
-    foreach (var inStringChar in inString)
+	var sbOut = new StringBuilder();
+	var inStrFormat = lowerCase ? inString.ToLower() : inString;
+	var inStrLen = inStrFormat.Length;
+	for(int inIdx = 0; inIdx < inStrLen; inIdx ++)
     {
-		if (slugOutChars.Contains(inStringChar))
-        {
-			if(sb.ToString().ToCharArray().Last() == '-') continue;
-            sb.Append("-");
-        }
-        else
-        {
-            sb.Append(inStringChar);
-        }
+		var inChar = inStrFormat[inIdx];
+		if (allowedChars.Contains(inChar))
+		{
+			sbOut.Append(inChar);
+			continue;
+		}
+		if (trimSlugs && (sbOut.Length == 0 || inIdx >= inStrLen-1)) continue;
+		if (dedupeSlugs) 
+		{
+			var lastOutChar = sbOut.ToString().LastOrDefault();
+			if (lastOutChar == slugChar) continue;
+		}
+		sbOut.Append(slugChar);
     }
-    return sb.ToString();
+	if (sbOut.ToString().LastOrDefault() == slugChar) sbOut.Remove(sbOut.Length-1, 1);
+    return sbOut.ToString();
 }

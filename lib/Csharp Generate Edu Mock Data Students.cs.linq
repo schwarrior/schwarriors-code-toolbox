@@ -248,24 +248,41 @@ class EduMockDataGenerator
 		return recordsInserted;
 	}
 
-	public static string SlugEncode(string inString)
+	// Ref: SlugEncode copied from https://github.com/schwarrior/schwarriors-code-toolbox/blob/main/lib/Csharp%20Slug%20Encode%20Remove%20Incompatible%20Path%20Unc%20and%20Url%20Uri%20Characters.cs.linq
+
+	/// <summary>
+	/// Replaces every character that is not strictly alphanumeric with a dash
+	/// </summary>
+	string slugEncode(
+		string inString,
+		bool lowerCase = false,
+		bool dedupeSlugs = true,
+		bool trimSlugs = true,
+		char slugChar = '-',
+		string allowedChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	)
 	{
-		var sb = new StringBuilder();
-		var invalidChars = Path.GetInvalidFileNameChars();
-		var slugOutChars = invalidChars + ":. ";
-		foreach (var inStringChar in inString)
+		var sbOut = new StringBuilder();
+		var inStrFormat = lowerCase ? inString.ToLower() : inString;
+		var inStrLen = inStrFormat.Length;
+		for (int inIdx = 0; inIdx < inStrLen; inIdx++)
 		{
-			if (slugOutChars.Contains(inStringChar))
+			var inChar = inStrFormat[inIdx];
+			if (allowedChars.Contains(inChar))
 			{
-				if(sb.ToString().ToCharArray().Last() == '-') continue;
-				sb.Append("-");
+				sbOut.Append(inChar);
+				continue;
 			}
-			else
+			if (trimSlugs && (sbOut.Length == 0 || inIdx >= inStrLen - 1)) continue;
+			if (dedupeSlugs)
 			{
-				sb.Append(inStringChar);
+				var lastOutChar = sbOut.ToString().LastOrDefault();
+				if (lastOutChar == slugChar) continue;
 			}
+			sbOut.Append(slugChar);
 		}
-		return sb.ToString();
+		if (sbOut.ToString().LastOrDefault() == slugChar) sbOut.Remove(sbOut.Length - 1, 1);
+		return sbOut.ToString();
 	}
 
 	string[] lastNames = {
