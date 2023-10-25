@@ -1,8 +1,16 @@
 {
     "version": "0.2.0",
     "configurations": [
+		{
+			"name": "Build Current TypeScript File",
+			"type": "PowerShell",
+			"request": "launch",
+			"script": "tsc \"${file}\"",
+			"cwd": "${cwd}"
+		},
+
         {
-            "name": "JS Launch Current File",
+            "name": "Node Launch Current File",
 			"type": "node",
             "request": "launch",
             "program": "${file}"
