@@ -33,17 +33,6 @@ export function enhanceUser(rawUser: User): User {
 	u.userType		= rawUser.userType
 	u.location		= rawUser.location
 	
-	
-	// const uObj = Object.create(u)
-	// ///@ts-ignore
-	// uObj.prototype.toString = function() {
-	// 	const me = this
-	// 	const tostringF = function () {
-	// 		return User.toStringB(me)
-	// 	}
-	// 	return tostringF
-	// }
-	
 	return u
 }
 
