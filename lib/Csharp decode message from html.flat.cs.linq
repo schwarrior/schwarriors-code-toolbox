@@ -8,6 +8,8 @@ void Main()
 	// takes all the methods and combines into one method
 	// this is for easy porting to PowerShell
 	
+	// ref https://stackoverflow.com/questions/78181/how-do-you-get-a-string-from-a-memorystream
+	
 	var stream = new MemoryStream();
 	var streamWriter = new StreamWriter(stream);
 	streamWriter.Write(SampleHtml);

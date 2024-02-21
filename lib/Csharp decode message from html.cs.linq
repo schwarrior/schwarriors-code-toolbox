@@ -4,6 +4,9 @@
 
 void Main()
 {
+	// ref https://stackoverflow.com/questions/78181/how-do-you-get-a-string-from-a-memorystream
+	
+	
 	var stream = new MemoryStream();
 	var streamWriter = new StreamWriter(stream);
 	streamWriter.Write(SampleHtml);
