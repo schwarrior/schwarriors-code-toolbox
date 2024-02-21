@@ -4,53 +4,37 @@
 
 void Main()
 {
+	// The flat version of this code file
+	// takes all the methods and combines into one method
+	// this is for easy porting to PowerShell
+	
 	var stream = new MemoryStream();
 	var streamWriter = new StreamWriter(stream);
 	streamWriter.Write(SampleHtml);
 	streamWriter.Flush();
 	stream.Position = 0;
-	var html = GetStringFromStream(stream);
-	// Console.Write(html);
-	var message = GetMessageFromHtml(html);
-	var cleanMessage = RemoveSpamFromSsrsErrorMessage(message);
-	Console.WriteLine(cleanMessage);
+	
+	var errorMessage = GetErrorMessageFromSsrsHttpResponse(stream);
+	Console.WriteLine(errorMessage);
 }
 
-string RemoveSpamFromSsrsErrorMessage(string inText)
+string GetErrorMessageFromSsrsHttpResponse(Stream stream)
 {
-	var removeStrings = new string[]
-	{
-		"Get Online Help",
-		"Reporting Services Error",
-		"SQL Server Reporting Services",
-	};
-	var outText = inText;
-	removeStrings.ToList().ForEach(rmv =>
-	{
-		outText = outText.Replace(rmv, " ");
-	});
-	return outText;
-}
-
-string GetStringFromStream(Stream stream) {
 	var streamReader = new StreamReader(stream);
-	var s = streamReader.ReadToEnd();
-	return s;
-}
-
-string GetMessageFromHtml(string html) {
+	var html = streamReader.ReadToEnd();
 	var styleSelRegex = new System.Text.RegularExpressions.Regex(@"(?si)< *style *>.*</ *style *>");
 	var unStyledHtml = styleSelRegex.Replace(html, " ");
-	// Console.Write(unStyledHtml);
 	var tagSelRegex = new System.Text.RegularExpressions.Regex(@"<[^>]*>");
-	var detaggedText = tagSelRegex.Replace(unStyledHtml, " ");
-	// var rmvdText = StripRemoveStrings(detaggedText, removeStrings);
-	var rmvdText = detaggedText;
+	var detaggedMsg = tagSelRegex.Replace(unStyledHtml, " ");
+	var removeStrings = new string[] {"Get Online Help", "Reporting Services Error", "SQL Server Reporting Services"};
+	removeStrings.ToList().ForEach(rmv => {detaggedMsg = detaggedMsg.Replace(rmv, " ");});
 	var wsSelRegex = new System.Text.RegularExpressions.Regex(@"\s{2,}");
-	var wsCleanedText = wsSelRegex.Replace(rmvdText, " ");
-	var decodedText = System.Web.HttpUtility.HtmlDecode(wsCleanedText);
-	return decodedText;
+	var wsCleanedMsg = wsSelRegex.Replace(detaggedMsg, " ");
+	var message = System.Web.HttpUtility.HtmlDecode(wsCleanedMsg);
+	return message;
 }
+
+
 
 const string SampleHtml = @"<html>
         <head>
@@ -112,3 +96,4 @@ A: link {
 							   
 									   </ body >
 							   </ html >";
+							   
