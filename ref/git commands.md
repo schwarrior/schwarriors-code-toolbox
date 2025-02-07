@@ -70,8 +70,8 @@ git push -u origin --all
 
 Set name and email
 ```Shell
-git config --global user.name "Rob Schwartz"
-git config --global user.name "robsgithub@prettyapps.net"
+git config --global user.name "User Name"
+git config --global user.name "user@emaildomain.com"
 ```
 
 Make CRLF lines and other Windows whitespace standards OK.
