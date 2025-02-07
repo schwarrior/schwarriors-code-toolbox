@@ -67,3 +67,14 @@ Push a local Repo to a new remote origin
 git remote add origin https://gitbub.com/sampleuser/newremoteorigin
 git push -u origin --all
 ```
+
+Set name and email
+```Shell
+git config --global user.name "Rob Schwartz"
+git config --global user.name "robsgithub@prettyapps.net"
+```
+
+Make CRLF lines and other Windows whitespace standards OK.
+```Shell
+git config --global core.whitespace blank-at-eol,-blank-at-eof,space-before-tab,indent-with-non-tab,-tab-in-indent,cr-at-eol
+```
