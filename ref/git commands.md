@@ -8,7 +8,7 @@ Create an empty Git repository in the specified directory (only for local only n
 $ git init <directory>
 ```
 
-Create an empty Git repository in the specified directory (for local onlyshared repos. Bare means no working dir. Must be cloned to be worked with)
+Create an empty Git repository in the specified directory (for local only shared repos. Bare means no working dir. Must be cloned to be worked with)
 ```Shell
 $ git init --bare <directory>
 ```
@@ -71,7 +71,9 @@ git push -u origin --all
 Set name and email
 ```Shell
 git config --global user.name "User Name"
-git config --global user.name "user@emaildomain.com"
+git config user.name "User Name"
+git config --global user.email "user@emaildomain.com"
+git config user.email "user@emaildomain.com"
 ```
 
 Make CRLF lines and other Windows whitespace standards OK.

@@ -13,7 +13,7 @@ schwarriors-code-toolbox
 
 # Welcome
 
-This is a library of reusable solutions for software development.
+Schwarrior's Code Toolbox is a library of reusable solutions for software development.
 
 ## Overview
 
@@ -27,14 +27,14 @@ Experimental code explorations can be found in the [lab folder](https://github.c
 
 Reference documents are found in the [ref folder](https://github.com/schwarrior/schwarriors-code-toolbox/tree/main/ref). These are resources created and maintained by other parties.
 
-There are also utility scripts used for mantaining the library. See the [util folder](https://github.com/schwarrior/schwarriors-code-toolbox/tree/main/util) folder.
+There are also utility scripts used for maintaining the library. See the [util folder](https://github.com/schwarrior/schwarriors-code-toolbox/tree/main/util) folder.
 
 ## Development Roadmap
 
 1) Experiment with the GitHub repo search functionality. Will it recognize and index meta-information and tags inside of the code commentary? Does it work for all the major file types in the toolbox?
-2) Develop a utility that will create a code comment flowerbox at the top of each file. For C# an VB code files, the flowerbox could be in the .NET XML documentation format.Populate the flowerbox with keywords that currently bloat the lib file names. Add additional tags indicating the target computer language and platform (for example: Language: C#. Platform: LinqPad).
+2) Develop a utility that will create a code comment flower box at the top of each file. For C# an VB code files, the flower box could be in the .NET XML documentation format.Populate the flower box with keywords that currently bloat the lib file names. Add additional tags indicating the target computer language and platform (for example: Language: C#. Platform: LinqPad).
 3) Rename all the of lib files. Now freed of needing the file name to be an index of all relevant patterns and technologies, use shorter and simpler names that focus on describing the software feature that the code could be used to develop.
-3) Find others who have created similiar projects. Discover how to grow this library from personal use into something that can benifit lots of developers around the world.
+3) Find others who have created similar projects. Discover how to grow this library from personal use into something that can benefit lots of developers around the world.
 4) Consult with someone who has studied library science and computer science. What organizational systems would allow the toolbox to become much bigger without becoming bloated, unwieldy and outdated ? 
 
 ## File Tagging
@@ -43,7 +43,7 @@ Add the following tags, in comment (as defined for file type) to top of file
 - meta-language: C#, VB.Net, JavaScript
 - meta-platform: LinqPad, Angular, WinForms
 - meta-pattern (optional tag): factory, mvc 
-- meta-keyworks: using, dispose, garbage collection
+- meta-keywords: using, dispose, garbage collection
 
 ## Code to add to the library
 
@@ -55,7 +55,7 @@ Add the following tags, in comment (as defined for file type) to top of file
 - SQL Server Grouping Sets
 - Programatic management of SQL Agent jobs
 - SSRS SQL Server Reporting Service Rollup report
-- SSRS Grouping with Page Nuhmbers on print view
+- SSRS Grouping with page numbers on print view
 - SSIS SQL Server Integration Service custom log message - script example
 - SSIS custom error handling script example
 - SSIS interact with external program example
@@ -68,7 +68,7 @@ Add the following tags, in comment (as defined for file type) to top of file
 - C# Date and number format samples
 - C# Data type cheat sheet
 - C# Keyword cheat sheet
-- VB.Net lamba expression syntax
+- VB.Net lambda expression syntax
 - How to host SSRS Report in ASP.NET MVC via an embedded - ASP.NET WebForm with a report control
 - ASP.NET MVC client-side field validation
 - ASP.NET MVC server side model validation
@@ -89,5 +89,5 @@ Add the following tags, in comment (as defined for file type) to top of file
 - Angular site theming
 - Angular theme viewer
 - Angular modals
-- Powershell register Windows Services
+- PowerShell register Windows Services
 - Consolidate windows / restore lost windows WinForm code
