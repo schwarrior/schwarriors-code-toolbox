@@ -1,6 +1,5 @@
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Reflection;
 
 namespace dotNet_10_Console_w_Config_and_Log;
 
@@ -9,26 +8,35 @@ namespace dotNet_10_Console_w_Config_and_Log;
 /// Add further dependencies to the constructor and register them in Program.cs.
 /// </summary>
 public sealed class Worker(
-    ILogger<Worker> logger,
-    IOptions<AppSettings> options,
-    IConfiguration configuration)
+    ILogger<Worker> _logger,
+    IOptions<AppSettings> options)
 {
     private readonly AppSettings _settings = options.Value;
 
     public async Task<int> RunAsync(string[] args, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Worker starting with {ArgCount} argument(s)", args.Length);
+        var resultCode = 0;
 
-        // Strongly-typed config
-        logger.LogInformation("Greeting: {Greeting}", _settings.Greeting);
+        var assembly = Assembly.GetEntryAssembly();
+        var assemblyName = assembly?.GetName()?.Name ?? "App";
+        var assemblyVersion = assembly?.GetName()?.Version?.ToString() ?? "0.0.0.0";
 
-        // Raw config access
-        logger.LogDebug("Default log level: {Level}", configuration["Logging:LogLevel:Default"]);
+        _logger.LogInformation("Starting {prog} {ver}", assemblyName, assemblyVersion);
 
-        // TODO: application code goes here
+        try
+        {
+            // to do: implement business logic here
+
+            _logger?.LogInformation("{prog} completed", assemblyName);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical(ex.Message);
+            resultCode = 1;
+        }
+
         await Task.CompletedTask;
-
-        logger.LogInformation("Worker finished");
-        return 0;
+        _logger?.LogInformation("{prog} exiting", assemblyName);
+        return resultCode;
     }
 }
