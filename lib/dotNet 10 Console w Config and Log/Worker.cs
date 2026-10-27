@@ -1,7 +1,7 @@
 using Microsoft.Extensions.Options;
 using System.Reflection;
 
-namespace dotNet_10_Console_w_Config_and_Log;
+namespace DotNet10wConfigLog;
 
 /// <summary>
 /// Application entry point. Put application code in <see cref="RunAsync"/>.

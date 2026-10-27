@@ -1,6 +1,4 @@
-﻿using dotNet_10_Console_w_Config_and_Log;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+﻿using DotNet10wConfigLog;
 
 // CreateApplicationBuilder wires up:
 //   - Configuration: appsettings.json, appsettings.{Environment}.json, environment variables, command-line args

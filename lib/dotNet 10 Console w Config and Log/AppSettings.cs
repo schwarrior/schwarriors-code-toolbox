@@ -1,11 +1,11 @@
-namespace dotNet_10_Console_w_Config_and_Log;
+namespace DotNet10wConfigLog;
 
 /// <summary>
 /// Strongly-typed settings bound from the "App" section of appsettings.json.
 /// </summary>
 public sealed class AppSettings
 {
-    public const string SectionName = "App";
+    public const string SectionName = "AppSettings";
 
     public string Greeting { get; set; } = string.Empty;
 }

@@ -1,0 +1,8 @@
+{
+	"profiles": {
+		"DotNet10wConfigLog": {
+			"commandName": "Project",
+			"commandLineArgs": "sample"
+		}
+	}
+}
