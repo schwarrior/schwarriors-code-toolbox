@@ -23,6 +23,10 @@ public sealed class Worker(
 
         _logger.LogInformation("Starting {prog} {ver}", assemblyName, assemblyVersion);
 
+        _logger.LogInformation("Starting with console parameters: {args}", args);
+
+        _logger.LogInformation("Greeting: {g}", _settings.Greeting);
+
         try
         {
             // to do: implement business logic here
