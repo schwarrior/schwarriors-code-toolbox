@@ -8,6 +8,22 @@ using Microsoft.Extensions.Hosting;
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection(AppSettings.SectionName));
+
+// The Event Log will not be written to if the source name is not registered.
+// Register with PowerShell (as admin) with the following command:
+// New-EventLog -LogName "Application" -Source "DotNet10wConfigLog"
+#pragma warning disable CA1416 // Validate platform compatibility
+builder.Services.AddLogging(loggingBuilder =>
+{
+    loggingBuilder.AddEventLog(settings =>
+    {
+        settings.LogName = "Application";
+        settings.SourceName = "DotNet10wConfigLog";
+    });
+    loggingBuilder.SetMinimumLevel(LogLevel.Information);
+});
+#pragma warning restore CA1416 // Validate platform compatibility
+
 builder.Services.AddTransient<Worker>();
 
 using var host = builder.Build();
