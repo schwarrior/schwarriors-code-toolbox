@@ -1,19 +1,26 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<!-- Console apps are typically based on Microsoft.NET.Sdk -->
+<!-- But injectable ILogger integration with the Windows Event Log only works in a Microsoft.NET.Sdk.Worker project -->
+<Project Sdk="Microsoft.NET.Sdk.Worker">
 
   <PropertyGroup>
+    <AssemblyName>DotNet10wConfigLog</AssemblyName>
+    <Version>10.0.1.0</Version>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-    <RootNamespace>dotNet_10_Console_w_Config_and_Log</RootNamespace>
+    <TargetFramework>net10.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.13" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.14" />
   </ItemGroup>
 
   <ItemGroup>
     <None Update="appsettings*.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="*ReadMe.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  
 </Project>
